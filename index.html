@@ -106,8 +106,8 @@
   /* Timeline schedule */
   .timeline { position: relative; max-width: 1120px; margin: 0 auto; }
   .timeline::before { content: ''; position: absolute; left: 50%; top: 10px; bottom: 10px; width: 1px; background: var(--line); transform: translateX(-50%); }
-  .tl-item { position: relative; display: grid; grid-template-columns: 1fr 1fr; column-gap: 76px; align-items: center; margin-bottom: 84px; }
-  .tl-item .dot { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 15px; height: 15px; border-radius: 50%; background: var(--cream); border: 2px solid var(--gold); z-index: 2; }
+  .tl-item { position: relative; display: grid; grid-template-columns: 1fr 1fr; column-gap: 76px; align-items: start; margin-bottom: 84px; }
+  .tl-item .dot { position: absolute; left: 50%; top: 14px; transform: translate(-50%,0); width: 15px; height: 15px; border-radius: 50%; background: var(--cream); border: 2px solid var(--gold); z-index: 2; }
   .tl-item .tl-text { }
   .tl-item:nth-child(odd) .tl-text { grid-column: 1; text-align: right; }
   .tl-item:nth-child(odd) .tl-media { grid-column: 2; }
@@ -416,8 +416,8 @@
     <p class="lead">Everything you need to reach us in Bali</p>
   </div>
   <div class="grid">
-    <div class="lux-card reveal"><div class="ic">&#9992;</div><h3>Flights</h3><p>Everyone flies into Ngurah Rai International (DPS) in Denpasar; AYANA is about 12 km away, a 20 to 30 minute drive.</p><p style="margin-top:10px;">From Toronto (YYZ) there are no nonstops, so plan on one stop through a major hub. The smoothest single-connection routes are Cathay Pacific via Hong Kong, EVA Air via Taipei, Korean Air via Seoul, Japan Airlines or ANA via Tokyo, Qatar Airways via Doha, Emirates via Dubai, and Singapore Airlines via Singapore.</p><p style="margin-top:10px;">Total travel time runs roughly 23 to 30 hours depending on the layover. Bali is 11 to 12 hours ahead of Toronto, so build in a little time to adjust. July is peak season, so book early for the best fares.</p></div>
-    <div class="lux-card reveal"><div class="ic">&#128452;</div><h3>Passport &amp; visa</h3><p>Passport valid 6+ months with blank pages. Most nationalities, including Canadians, qualify for visa on arrival or e-VOA (about IDR 500,000, 30 days). Apply online in advance at <a class="inline" href="https://evisa.imigrasi.go.id/" target="_blank" rel="noopener">evisa.imigrasi.go.id</a> to skip the queue.</p><p style="margin-top:10px;"><strong style="color:var(--palm-dark);font-weight:500;">Bali Tourist Levy:</strong> Every international tourist entering Bali pays a one-time IDR 150,000 tourism levy (roughly CAD $12 to $14, depending on exchange rates). This is separate from the visa fee.</p></div>
+    <div class="lux-card reveal"><div class="ic">&#9992;</div><h3>Flights</h3><p>Everyone flies into Ngurah Rai International (DPS) in Denpasar; AYANA is about 12 km away, a 20 to 30 minute drive.</p><p style="margin-top:10px;">From Toronto (YYZ) there are no nonstops, so plan on one stop through a major hub. The most common connections are through Hong Kong, Taipei, Seoul, Tokyo, Doha, Dubai, and Singapore.</p><p style="margin-top:10px;">Bali is 12 hours ahead of Toronto, so build in a little time to adjust. July is peak season, so book early for the best fares.</p></div>
+    <div class="lux-card reveal"><div class="ic">&#128452;</div><h3>Passport &amp; visa</h3><p>Passport valid 6+ months with blank pages. Most nationalities, including Canadians, qualify for visa on arrival or e-VOA (about IDR 500,000, 30 days). Apply online in advance at <a class="inline" href="https://evisa.imigrasi.go.id/" target="_blank" rel="noopener">evisa.imigrasi.go.id</a> to skip the queue.</p><p style="margin-top:10px;"><strong style="color:var(--palm-dark);font-weight:500;">Bali Tourist Levy:</strong> Every international tourist entering Bali pays a one-time IDR 150,000 tourism levy (roughly CAD $12 to $14, depending on exchange rates), separate from the visa fee. Pay online in advance at <a class="inline" href="https://lovebali.baliprov.go.id/" target="_blank" rel="noopener">lovebali.baliprov.go.id</a>.</p></div>
     <div class="lux-card reveal"><div class="ic">&#9925;</div><h3>Weather in July</h3><p>Dry season and the loveliest time of year: sunny, around 27&deg;C / 81&deg;F, cooler evenings, little rain, with a touch of tropical humidity.</p></div>
   </div>
 </section>
@@ -436,23 +436,22 @@
     <h2>Where To Stay</h2>
     <p class="lead">All of us together at AYANA</p>
   </div>
-  <p class="center" style="max-width:620px;margin:0 auto 40px;color:var(--muted);font-family:'Cormorant Garamond',serif;font-size:1.3rem;">We're keeping everyone together at RIMBA by AYANA, on the resort estate and a short shuttle from the celebration.</p>
   <div class="grid" style="max-width:760px;margin:0 auto;">
     <div class="lux-card reveal" style="border-color: var(--gold-lt); border-width: 1.5px; text-align: left;">
-      <p class="price-tag">Recommended &middot; Where we're staying</p>
       <h3>RIMBA by AYANA &middot; Resort View Room</h3>
       <p>We recommend that all guests stay in a <strong style="color:var(--palm-dark);font-weight:500;">Resort View Room at RIMBA by AYANA</strong>, where we've secured our best group rate and reserved a room block so everyone can stay together.</p>
-      <p style="margin-top:12px;">Our group rate is approximately <strong style="color:var(--palm-dark);font-weight:500;">$295 CAD per room, per night</strong>, including all taxes and fees, and is available until <strong style="color:var(--palm-dark);font-weight:500;">September 25, 2026</strong>.</p>
+      <p style="margin-top:12px;">Our group rate is <strong style="color:var(--palm-dark);font-weight:500;">$295 CAD per room, per night</strong>, including all taxes and fees, and is available until <strong style="color:var(--palm-dark);font-weight:500;">September 25, 2026</strong>.</p>
       <p style="margin-top:12px;padding:14px 18px;background:var(--sand);border-radius:8px;border:1px solid var(--line);font-size:0.92rem;">For reference, the current public rate (as of August) is around <strong style="color:var(--palm-dark);font-weight:500;">$425 CAD per night</strong>, so our group rate saves you roughly $130 a night.</p>
       <p style="margin-top:12px;">RIMBA is a vibrant, modern resort surrounded by lush Balinese greenery and where most of our guests will be staying. You'll have access to AYANA's incredible resort grounds, multiple pools including the Forest Pool and Three Monkey Pool, plenty of dining options, and activities like yoga and Balinese cultural classes. Think tropical resort getaway meets wedding weekend.</p>
       <p style="margin-top:16px;"><strong style="color:var(--palm-dark);font-weight:500;">Your Resort View Room includes:</strong></p>
       <ul>
         <li>Spacious <strong>42 sqm</strong> room</li>
-        <li>Choice of <strong>one king bed or two double beds</strong></li>
+        <li>Choice of <strong>one king bed or two twin beds</strong></li>
         <li><strong>Daily breakfast for two</strong></li>
         <li>Maximum <strong>3 adults per room</strong></li>
         <li>Children ages <strong>0 to 3 stay free</strong></li>
         <li>Access to AYANA resort facilities</li>
+        <li>Check-in <strong>3:00 PM</strong>, check-out <strong>12:00 PM</strong></li>
       </ul>
       <p style="margin-top:14px;">We recommend staying at least <strong style="color:var(--palm-dark);font-weight:500;">2 nights, from July 14 to July 16</strong>. A rough idea of your dates is perfectly fine for now. It's generally easier to add nights later at the same group rate, but we may not be able to add additional rooms once our room block is full.</p>
       <p style="margin-top:12px;">If you're not ready to book by September 25, no worries. You can still book afterwards, but we won't be able to guarantee the same rate or availability.</p>
@@ -468,7 +467,6 @@
     <h2>Booking Request</h2>
     <p class="lead">Tell us your details and our planner will coordinate your room</p>
   </div>
-  <p class="center" style="max-width:620px;margin:0 auto 24px;color:var(--muted);font-family:'Cormorant Garamond',serif;font-size:1.25rem;">This does not charge you or confirm a room. It simply gives our planner what they need to hold your room in the block. A rough idea of your dates is perfectly fine for now.</p>
   <div class="lux-card reveal" style="max-width:680px;margin:0 auto 40px;text-align:left;">
     <p><strong style="color:var(--palm-dark);font-weight:500;">Deposit &amp; payment:</strong> A <strong style="color:var(--palm-dark);font-weight:500;">50% deposit</strong> will be required by <strong style="color:var(--palm-dark);font-weight:500;">September 25, 2026</strong> to secure your room at our group rate. Payment will be made directly through our wedding planners.</p>
     <p style="margin-top:12px;">If your travel plans change after booking, please let us know as soon as possible. We'll coordinate with our planners to make any necessary changes and arrange a refund where possible.</p>
@@ -485,15 +483,14 @@
       <div class="field"><label for="b-out">Check-out date</label><input id="b-out" name="checkout" type="date"></div>
     </div>
     <div class="form-row">
-      <div class="field"><label for="b-nights">Number of nights</label><input id="b-nights" name="nights" type="number" min="1" placeholder="e.g. 2"></div>
       <div class="field"><label for="b-rooms">Number of rooms</label><input id="b-rooms" name="rooms" type="number" min="1" value="1"></div>
+      <div class="field"><label for="b-bed">Bed preference</label><select id="b-bed" name="bed"><option>No preference</option><option>One king bed</option><option>Two twin beds</option></select></div>
     </div>
-    <div class="field"><label for="b-bed">Bed preference</label><select id="b-bed" name="bed"><option>No preference</option><option>One king bed</option><option>Two double beds</option></select></div>
     <div class="form-row">
       <div class="field"><label for="b-adults">Number of adults</label><input id="b-adults" name="adults" type="number" min="1" value="1"></div>
       <div class="field"><label for="b-children">Number of children</label><input id="b-children" name="children" type="number" min="0" value="0"></div>
     </div>
-    <div class="field"><label for="b-ages">Children's ages (if any)</label><input id="b-ages" name="children_ages" placeholder="e.g. 2 and 6"></div>
+    <div class="field"><label for="b-ages">Children's ages (ages 0 to 3 stay free)</label><input id="b-ages" name="children_ages" placeholder="e.g. 2 and 6"></div>
     <div class="field"><label for="b-guests">Names of everyone in your room</label><input id="b-guests" name="guest_names" placeholder="Guests sharing this reservation"></div>
     <div class="field"><label for="b-req">Special requests</label><textarea id="b-req" name="requests" placeholder="Connecting rooms, accessibility needs, a third guest, early check-in, anything else"></textarea></div>
     <div class="center"><button class="btn dark" type="submit" id="bookingBtn">Submit Booking Request</button></div>
@@ -677,7 +674,7 @@
   // ===========================================================
   // Room Booking Request -> Google Sheets (same endpoint, "Room Bookings" tab)
   // ===========================================================
-  var BOOKING_FIELDS = ['booking_name','email','phone','checkin','checkout','nights','rooms','bed','adults','children','children_ages','guest_names','requests'];
+  var BOOKING_FIELDS = ['booking_name','email','phone','checkin','checkout','rooms','bed','adults','children','children_ages','guest_names','requests'];
 
   function submitBooking(e) {
     e.preventDefault();
@@ -697,6 +694,7 @@
     status.style.color = '';
     status.textContent = 'Sending your booking request...';
 
+    var bNameVal = form.booking_name.value;
     var data = new URLSearchParams();
     data.append('form', 'booking');
     BOOKING_FIELDS.forEach(function(k){ data.append(k, form[k] ? form[k].value : ''); });
@@ -706,8 +704,13 @@
       .then(function(res){
         if (res && res.result === 'success') {
           form.style.display = 'none';
-          status.style.color = 'var(--palm)';
-          status.textContent = 'Thank you! Your booking request is in. Our planner will follow up to confirm your room.';
+          status.innerHTML =
+            '<div style="max-width:540px;margin:0 auto;padding:36px 28px;border:1px solid var(--gold-lt);border-radius:12px;background:var(--sand);text-align:center;">' +
+            '<div style="font-size:2.4rem;color:var(--gold);line-height:1;">&#10003;</div>' +
+            '<p style="font-family:\'Cormorant Garamond\',serif;font-size:2rem;color:var(--palm-dark);margin:10px 0 6px;font-style:normal;">Booking request received</p>' +
+            '<p style="color:var(--muted);font-size:1rem;font-style:normal;">Thank you, ' + (bNameVal ? bNameVal.split(/[ ,&]/)[0] : 'friend') + '. Your details are in and we\'ll contact you with next steps for the deposit payment to secure your room. This is not a confirmed reservation yet.</p>' +
+            '</div>';
+          status.style.minHeight = '';
         } else { throw new Error('Server error'); }
       })
       .catch(function(){
