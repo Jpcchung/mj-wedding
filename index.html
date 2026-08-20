@@ -46,14 +46,31 @@
   /* Nav */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; justify-content: center; flex-wrap: wrap; gap: 2px;
-    padding: 14px 10px; transition: background .5s, box-shadow .5s, padding .5s;
+    display: flex; justify-content: space-between; align-items: center; gap: 14px;
+    padding: 12px 26px; transition: background .5s, box-shadow .5s, padding .5s;
   }
-  nav.solid { background: rgba(250,246,239,0.92); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--line); padding: 10px 10px; }
+  nav.solid { background: rgba(250,246,239,0.92); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--line); padding: 9px 26px; }
+  .nav-links { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; }
   nav a { color: var(--white); text-decoration: none; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 6px 12px; transition: color .3s, opacity .3s; opacity: .9; }
-  nav a:hover { color: var(--gold-lt); }
-  nav.solid a { color: var(--ink); }
-  nav.solid a:hover { color: var(--gold); }
+  .nav-links a:hover { color: var(--gold-lt); }
+  nav.solid .nav-links a { color: var(--ink); }
+  nav.solid .nav-links a:hover { color: var(--gold); }
+  /* Isolated RSVP button, always visible on the right */
+  nav .nav-rsvp {
+    flex-shrink: 0; background: var(--gold-lt); color: var(--palm-dark);
+    padding: 10px 30px; border-radius: 999px; font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.24em; opacity: 1; box-shadow: 0 6px 18px -8px rgba(43,51,47,0.5);
+    transition: background .3s, color .3s, transform .2s, box-shadow .3s;
+  }
+  nav .nav-rsvp:hover { background: var(--gold); color: #fff; transform: translateY(-1px); box-shadow: 0 10px 22px -8px rgba(43,51,47,0.55); }
+  nav.solid .nav-rsvp { background: var(--gold-lt); color: var(--palm-dark); }
+  nav.solid .nav-rsvp:hover { background: var(--gold); color: #fff; }
+  @media (max-width: 720px) {
+    nav { padding: 10px 14px; gap: 8px; }
+    .nav-links { gap: 0; }
+    nav a { padding: 5px 8px; font-size: 0.62rem; letter-spacing: 0.14em; }
+    nav .nav-rsvp { padding: 9px 20px; font-size: 0.64rem; }
+  }
 
   /* Hero */
   .hero { position: relative; height: 100vh; min-height: 640px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); overflow: hidden; }
@@ -293,14 +310,16 @@
 </script>
 
 <nav id="nav">
-  <a href="#home">Home</a>
-  <a href="#schedule">Schedule</a>
-  <a href="#travel">Travel</a>
-  <a href="#stay">Stay</a>
-  <a href="#booking">Booking</a>
-  <a href="#faq">FAQ</a>
-  <a href="#rsvp">RSVP</a>
-  <a href="#explore">Explore</a>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#travel">Travel</a>
+    <a href="#stay">Stay</a>
+    <a href="#booking">Booking</a>
+    <a href="#faq">FAQ</a>
+    <a href="#explore">Explore</a>
+  </div>
+  <a href="#rsvp" class="nav-rsvp">RSVP</a>
 </nav>
 
 <header class="hero" id="home">
@@ -619,7 +638,7 @@
   // Paste your Google Apps Script Web App URL between the quotes.
   // Setup steps are in rsvp-google-sheets-setup.md
   // ===========================================================
-  var RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxD9e8rabY1A_LVI10OcbwAnW_IywrWV7Yzn4ep7RhzW9HXgxWvFESi5xE1u99ps49cng/exec";
+  var RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxq1zJ5GifDf-LBJHy6-h0YtFSK68w4D4L1ekqUOIwaWB2-mBtEkbcZ2tfmOM8d1YrL1A/exec";
   var RSVP_FALLBACK_EMAIL = "jonathan@getluckyvr.com";
 
   function submitRsvp(e) {
@@ -649,19 +668,16 @@
       data.append(k, form[k] ? form[k].value : '');
     });
 
-    fetch(RSVP_ENDPOINT, { method: 'POST', body: data })
-      .then(function(r){ return r.json(); })
-      .then(function(res){
-        if (res && res.result === 'success') {
-          form.style.display = 'none';
-          status.innerHTML =
-            '<div style="max-width:540px;margin:0 auto;padding:40px 30px;border:1px solid rgba(216,184,120,0.5);border-radius:12px;background:rgba(255,255,255,0.06);">' +
-            '<div style="font-size:2.4rem;color:var(--gold-lt);line-height:1;">&#10003;</div>' +
-            '<p style="font-family:\'Cormorant Garamond\',serif;font-size:2.2rem;color:var(--cream);margin:10px 0 6px;font-style:normal;">Thank you!</p>' +
-            '<p style="color:rgba(250,246,239,0.85);font-size:1rem;font-style:normal;">Your RSVP is in, ' + (nameVal ? nameVal.split(/[ ,&]/)[0] : 'friend') + '. We can\'t wait to celebrate with you in Bali. Need to change something later? Just reach out to us.</p>' +
-            '</div>';
-          status.style.minHeight = '';
-        } else { throw new Error('Server error'); }
+    fetch(RSVP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' })
+      .then(function(){
+        form.style.display = 'none';
+        status.innerHTML =
+          '<div style="max-width:540px;margin:0 auto;padding:40px 30px;border:1px solid rgba(216,184,120,0.5);border-radius:12px;background:rgba(255,255,255,0.06);">' +
+          '<div style="font-size:2.4rem;color:var(--gold-lt);line-height:1;">&#10003;</div>' +
+          '<p style="font-family:\'Cormorant Garamond\',serif;font-size:2.2rem;color:var(--cream);margin:10px 0 6px;font-style:normal;">Thank you!</p>' +
+          '<p style="color:rgba(250,246,239,0.85);font-size:1rem;font-style:normal;">Your RSVP is in, ' + (nameVal ? nameVal.split(/[ ,&]/)[0] : 'friend') + '. We can\'t wait to celebrate with you in Bali. Need to change something later? Just reach out to us.</p>' +
+          '</div>';
+        status.style.minHeight = '';
       })
       .catch(function(){
         btn.disabled = false;
@@ -699,19 +715,16 @@
     data.append('form', 'booking');
     BOOKING_FIELDS.forEach(function(k){ data.append(k, form[k] ? form[k].value : ''); });
 
-    fetch(RSVP_ENDPOINT, { method: 'POST', body: data })
-      .then(function(r){ return r.json(); })
-      .then(function(res){
-        if (res && res.result === 'success') {
-          form.style.display = 'none';
-          status.innerHTML =
-            '<div style="max-width:540px;margin:0 auto;padding:36px 28px;border:1px solid var(--gold-lt);border-radius:12px;background:var(--sand);text-align:center;">' +
-            '<div style="font-size:2.4rem;color:var(--gold);line-height:1;">&#10003;</div>' +
-            '<p style="font-family:\'Cormorant Garamond\',serif;font-size:2rem;color:var(--palm-dark);margin:10px 0 6px;font-style:normal;">Booking request received</p>' +
-            '<p style="color:var(--muted);font-size:1rem;font-style:normal;">Thank you, ' + (bNameVal ? bNameVal.split(/[ ,&]/)[0] : 'friend') + '. Your details are in and we\'ll contact you with next steps for the deposit payment to secure your room. This is not a confirmed reservation yet.</p>' +
-            '</div>';
-          status.style.minHeight = '';
-        } else { throw new Error('Server error'); }
+    fetch(RSVP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' })
+      .then(function(){
+        form.style.display = 'none';
+        status.innerHTML =
+          '<div style="max-width:540px;margin:0 auto;padding:36px 28px;border:1px solid var(--gold-lt);border-radius:12px;background:var(--sand);text-align:center;">' +
+          '<div style="font-size:2.4rem;color:var(--gold);line-height:1;">&#10003;</div>' +
+          '<p style="font-family:\'Cormorant Garamond\',serif;font-size:2rem;color:var(--palm-dark);margin:10px 0 6px;font-style:normal;">Booking request received</p>' +
+          '<p style="color:var(--muted);font-size:1rem;font-style:normal;">Thank you, ' + (bNameVal ? bNameVal.split(/[ ,&]/)[0] : 'friend') + '. Your details are in and we\'ll contact you with next steps for the deposit payment to secure your room. This is not a confirmed reservation yet.</p>' +
+          '</div>';
+        status.style.minHeight = '';
       })
       .catch(function(){
         btn.disabled = false;
