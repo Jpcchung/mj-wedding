@@ -33,8 +33,9 @@
   .eyebrow { font-family: 'Jost', sans-serif; letter-spacing: 0.42em; text-transform: uppercase; font-size: 0.72rem; font-weight: 400; }
   .rule { width: 70px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 22px auto; position: relative; }
   .rule::after { content: '\2766'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: var(--gold); background: var(--cream); padding: 0 10px; font-size: 0.85rem; }
-  .section { padding: 120px 26px; max-width: 1080px; margin: 0 auto; }
-  .section-head { text-align: center; margin-bottom: 64px; }
+  .section { padding: 70px 26px; max-width: 1080px; margin: 0 auto; }
+  .section + .section { border-top: 1px solid var(--line); }
+  .section-head { text-align: center; margin-bottom: 48px; }
   .section-head .eyebrow { color: var(--gold); }
   .section-head h2 { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 500; line-height: 1.05; margin-top: 12px; }
   .section-head p.lead { color: var(--muted); font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; margin-top: 6px; }
@@ -55,21 +56,23 @@
   .nav-links a:hover { color: var(--gold-lt); }
   nav.solid .nav-links a { color: var(--ink); }
   nav.solid .nav-links a:hover { color: var(--gold); }
-  /* Isolated RSVP button, always visible on the right */
-  nav .nav-rsvp {
-    flex-shrink: 0; background: var(--gold-lt); color: var(--palm-dark);
-    padding: 10px 30px; border-radius: 999px; font-size: 0.7rem; font-weight: 500;
-    letter-spacing: 0.24em; opacity: 1; box-shadow: 0 6px 18px -8px rgba(43,51,47,0.5);
-    transition: background .3s, color .3s, transform .2s, box-shadow .3s;
+  /* Isolated CTA buttons, always visible on the right */
+  nav .nav-cta { display: flex; gap: 10px; flex-shrink: 0; align-items: center; }
+  nav .nav-btn {
+    background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.65);
+    padding: 8px 20px; border-radius: 999px; font-size: 0.62rem; font-weight: 400;
+    letter-spacing: 0.14em; opacity: 1; white-space: nowrap;
+    transition: background .3s, color .3s, border-color .3s, transform .2s, box-shadow .3s;
   }
-  nav .nav-rsvp:hover { background: var(--gold); color: #fff; transform: translateY(-1px); box-shadow: 0 10px 22px -8px rgba(43,51,47,0.55); }
-  nav.solid .nav-rsvp { background: var(--gold-lt); color: var(--palm-dark); }
-  nav.solid .nav-rsvp:hover { background: var(--gold); color: #fff; }
-  @media (max-width: 720px) {
+  nav .nav-btn:hover { background: rgba(255,255,255,0.16); border-color: #fff; transform: translateY(-1px); }
+  nav.solid .nav-btn { background: var(--gold-lt); color: var(--palm-dark); border-color: var(--gold-lt); font-weight: 500; box-shadow: 0 6px 18px -8px rgba(43,51,47,0.5); }
+  nav.solid .nav-btn:hover { background: var(--gold); color: #fff; border-color: var(--gold); box-shadow: 0 10px 22px -8px rgba(43,51,47,0.55); }
+  @media (max-width: 900px) {
     nav { padding: 10px 14px; gap: 8px; }
     .nav-links { gap: 0; }
-    nav a { padding: 5px 8px; font-size: 0.62rem; letter-spacing: 0.14em; }
-    nav .nav-rsvp { padding: 9px 20px; font-size: 0.64rem; }
+    nav a { padding: 5px 8px; font-size: 0.6rem; letter-spacing: 0.12em; }
+    nav .nav-btn { padding: 8px 14px; font-size: 0.58rem; letter-spacing: 0.1em; }
+    nav .nav-cta { gap: 7px; }
   }
 
   /* Hero */
@@ -81,10 +84,13 @@
   .hero-inner { position: relative; z-index: 3; padding: 40px 24px; animation: fadeUp 1.6s ease both; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(30px);} to { opacity:1; transform:none;} }
   .hero .eyebrow { opacity: .92; }
-  .hero .names { font-size: clamp(3.4rem, 12vw, 8rem); font-weight: 300; line-height: 1; letter-spacing: 0.01em; margin: 20px 0; text-shadow: 0 2px 30px rgba(0,0,0,.3); }
-  .hero .names .amp { display: block; font-style: italic; font-size: 0.5em; color: var(--gold-lt); margin: 4px 0; }
-  .hero .meta { letter-spacing: 0.34em; text-transform: uppercase; font-size: clamp(0.72rem, 2vw, 0.92rem); }
+  .hero .names { font-size: clamp(3.4rem, 12vw, 8rem); font-weight: 300; line-height: 1; letter-spacing: 0.01em; margin: 20px 0; text-shadow: 0 2px 30px rgba(0,0,0,.3); display: flex; flex-direction: column; align-items: center; gap: 0.08em; }
+  .hero .names .amp { display: block; font-style: italic; font-size: 0.5em; color: var(--gold-lt); margin: 0; line-height: 1; }
+  .hero .meta { letter-spacing: 0.32em; text-transform: uppercase; font-size: clamp(0.95rem, 2.4vw, 1.35rem); font-weight: 500; color: var(--gold-lt); margin-top: 6px; text-shadow: 0 2px 16px rgba(0,0,0,.35); }
   .hero .venue { margin-top: 8px; letter-spacing: 0.28em; text-transform: uppercase; font-size: 0.72rem; opacity: .85; }
+  .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .hero-cta .btn { background: var(--gold-lt); color: var(--palm-dark); border-color: var(--gold-lt); }
+  .hero-cta .btn:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
   .scroll-cue { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 3; color: var(--white); font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: .8; }
   .scroll-cue span { display: block; width: 1px; height: 46px; background: rgba(255,255,255,.7); margin: 10px auto 0; animation: cue 2.2s ease-in-out infinite; transform-origin: top; }
   @keyframes cue { 0%,100%{ transform: scaleY(.3); opacity:.3;} 50%{ transform: scaleY(1); opacity:1;} }
@@ -116,45 +122,52 @@
   .stay-note { display: flex; align-items: center; justify-content: center; gap: 34px; max-width: 640px; margin: 0 auto 56px; background: var(--white); border: 1px solid var(--line); border-radius: 4px; padding: 26px 34px; box-shadow: var(--shadow); }
   .stay-note > div { display: flex; flex-direction: column; align-items: center; text-align: center; }
   .stay-note .stay-len { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--palm-dark); letter-spacing: 0.02em; }
-  .stay-note .stay-cap { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-top: 4px; }
+  .stay-note .stay-cap { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
   .stay-note .stay-div { width: 1px; align-self: stretch; background: var(--line); }
   @media (max-width: 560px) { .stay-note { flex-direction: column; gap: 18px; } .stay-note .stay-div { width: 60px; height: 1px; } }
 
+  /* RIMBA room carousel */
+  .room-carousel { position: relative; margin: 20px 0 24px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+  .room-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
+  .room-track::-webkit-scrollbar { display: none; }
+  .room-track img { flex: 0 0 100%; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; scroll-snap-align: center; }
+  .room-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; border-radius: 50%; border: 0; background: rgba(250,246,239,0.85); color: var(--palm-dark); font-size: 1.4rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px -6px rgba(43,51,47,0.5); transition: background .3s; }
+  .room-nav:hover { background: #fff; }
+  .room-prev { left: 12px; } .room-next { right: 12px; }
+  .room-dots { position: absolute; bottom: 12px; left: 0; right: 0; display: flex; gap: 7px; justify-content: center; }
+  .room-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.55); transition: background .3s, transform .3s; }
+  .room-dots span.active { background: #fff; transform: scale(1.3); }
+
   /* Timeline schedule */
-  .timeline { position: relative; max-width: 1120px; margin: 0 auto; }
-  .timeline::before { content: ''; position: absolute; left: 50%; top: 10px; bottom: 10px; width: 1px; background: var(--line); transform: translateX(-50%); }
-  .tl-item { position: relative; display: grid; grid-template-columns: 1fr 1fr; column-gap: 76px; align-items: start; margin-bottom: 84px; }
-  .tl-item .dot { position: absolute; left: 50%; top: 14px; transform: translate(-50%,0); width: 15px; height: 15px; border-radius: 50%; background: var(--cream); border: 2px solid var(--gold); z-index: 2; }
-  .tl-item .tl-text { }
-  .tl-item:nth-child(odd) .tl-text { grid-column: 1; text-align: right; }
-  .tl-item:nth-child(odd) .tl-media { grid-column: 2; }
-  .tl-item:nth-child(even) .tl-text { grid-column: 2; text-align: left; }
-  .tl-item:nth-child(even) .tl-media { grid-column: 1; }
-  .tl-item .time { font-family: 'Cormorant Garamond', serif; color: var(--gold); font-size: 1.25rem; letter-spacing: 0.04em; }
-  .tl-item h3 { font-size: 2rem; margin: 4px 0 10px; }
+  .timeline { max-width: 1060px; margin: 0 auto; }
+  .tl-item { display: flex; align-items: center; gap: 56px; padding: 44px 0; border-top: 1px solid var(--line); }
+  .tl-item:first-child { border-top: 0; padding-top: 4px; }
+  .tl-item .dot { display: none; }
+  .tl-item .tl-text { flex: 1 1 0; min-width: 0; text-align: left; }
+  .tl-item .tl-media { flex: 1 1 0; min-width: 0; }
+  .tl-item:nth-child(even) .tl-media { order: -1; }
+  .tl-item .time { font-family: 'Cormorant Garamond', serif; color: var(--gold); font-size: 1.2rem; letter-spacing: 0.04em; }
+  .tl-item h3 { font-size: 1.9rem; margin: 4px 0 10px; }
   .tl-item p { color: var(--muted); font-size: 1rem; }
-  .tl-item .tag { display: inline-block; font-size: 0.58rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--palm); border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; margin-bottom: 8px; }
   .tl-item a { color: var(--palm); font-size: 0.85rem; }
-  .tl-item .tl-media { display: grid; gap: 8px; }
-  .tl-item .tl-media figure { position: relative; overflow: hidden; border-radius: 8px; box-shadow: var(--shadow); margin: 0; }
-  .tl-item .tl-media img { width: 100%; height: 340px; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
-  .tl-item .tl-media figure:hover img { transform: scale(1.05); }
-  .tl-item .tl-media figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 14px; color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 1rem; letter-spacing: 0.03em; background: linear-gradient(transparent, rgba(20,32,26,0.7)); }
-  .tl-item .tl-media.duo { grid-template-columns: 1fr 1fr; }
-  .tl-item .tl-media.duo img { height: 300px; }
+  .tl-item .tl-media figure { position: relative; overflow: hidden; border-radius: 8px; box-shadow: var(--shadow); margin: 0; display: grid; gap: 8px; }
+  .tl-item .tl-media img { width: 100%; height: 300px; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .tl-item .tl-media figure:hover img { transform: scale(1.04); }
   @media (max-width: 760px) {
-    .timeline::before { left: 9px; }
-    .tl-item { grid-template-columns: 1fr; row-gap: 18px; margin-bottom: 54px; padding-left: 34px; }
-    .tl-item:nth-child(odd) .tl-text, .tl-item:nth-child(even) .tl-text { grid-column: 1; text-align: left; }
-    .tl-item:nth-child(odd) .tl-media, .tl-item:nth-child(even) .tl-media { grid-column: 1; }
-    .tl-item .dot { left: 9px; top: 8px; transform: translate(-50%,0); }
-    .tl-item .tl-media img, .tl-item .tl-media.duo img { height: 230px; }
+    .tl-item { flex-direction: column; align-items: stretch; gap: 16px; padding: 32px 0; }
+    .tl-item:nth-child(even) .tl-media { order: 0; }
+    .tl-item .tl-media img { height: 220px; }
   }
 
   /* Parallax band */
   .band { position: relative; height: 62vh; min-height: 420px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--white); overflow: hidden; }
   .band-bg { position: absolute; inset: -10% 0; background-size: cover; background-position: center; will-change: transform; }
   .band::after { content: ''; position: absolute; inset: 0; background: rgba(25,38,31,0.42); }
+  .band-split .band-photos { position: absolute; inset: 0; display: flex; }
+  .band-split .band-half { flex: 1 1 50%; min-width: 0; background-size: cover; background-position: center; }
+  @media (max-width: 640px) {
+    .band-split .band-photos { flex-direction: column; }
+  }
   .band .band-inner { position: relative; z-index: 2; padding: 0 24px; }
   .band .band-inner .eyebrow { color: var(--gold-lt); }
   .band .band-inner h2 { font-size: clamp(2.2rem, 6vw, 3.8rem); font-weight: 300; margin-top: 14px; font-style: italic; }
@@ -319,7 +332,10 @@
     <a href="#faq">FAQ</a>
     <a href="#explore">Explore</a>
   </div>
-  <a href="#rsvp" class="nav-rsvp">RSVP</a>
+  <div class="nav-cta">
+    <a href="#booking" class="nav-btn">Reserve Group Rate by Sep 25</a>
+    <a href="#rsvp" class="nav-btn">RSVP by Jan 15</a>
+  </div>
 </nav>
 
 <header class="hero" id="home">
@@ -331,9 +347,12 @@
   </div>
   <div class="hero-inner">
     <h1 class="names">Maggie<span class="amp">&amp;</span>Jonathan</h1>
-    <p class="meta">07 &middot; 15 &middot; 2027</p>
+    <p class="meta">July &middot; 15 &middot; 2027</p>
     <p class="venue">AYANA Resort Bali &middot; Jimbaran, Indonesia</p>
-    <a class="btn" href="#rsvp">RSVP by January 15</a>
+    <div class="hero-cta">
+      <a class="btn" href="#booking">Reserve Group Rate by Sep 25</a>
+      <a class="btn" href="#rsvp">RSVP by Jan 15</a>
+    </div>
   </div>
   <div class="scroll-cue">Scroll<span></span></div>
 </header>
@@ -369,16 +388,16 @@
     <p class="lead">Come for the wedding, stay for the adventure</p>
   </div>
   <div class="stay-note reveal">
-    <div><span class="stay-len">3 Days &middot; 2 Nights</span><span class="stay-cap">Suggested minimum stay</span></div>
+    <div><span class="stay-cap">Suggested minimum stay</span><span class="stay-len">3 Days &middot; 2 Nights</span></div>
     <div class="stay-div"></div>
-    <div><span class="stay-len">7 Days &middot; 6 Nights</span><span class="stay-cap">The full adventure</span></div>
+    <div><span class="stay-cap">The full adventure</span><span class="stay-len">7 Days &middot; 6 Nights</span></div>
   </div>
   <div class="timeline">
     <div class="tl-item reveal"><span class="dot"></span>
       <div class="tl-text">
         <span class="time">Tue &middot; July 13</span>
         <h3>Group Activities</h3>
-        <p>For those arriving early, we're planning something active (pilates and yoga, golf and pickleball), an afternoon at a beach club, and dinner in the evening.</p>
+        <p>For those arriving early, we're planning something active (pilates / yoga or golf / pickleball), an afternoon at a beach club, and dinner in the evening.</p>
       </div>
       <div class="tl-media">
         <figure><img src="https://files-r2.ayana.com/r/chapter-01_czUy0A.webp" alt="Bali clifftops and ocean" loading="lazy"></figure>
@@ -430,9 +449,7 @@
 
 <section class="section" id="travel">
   <div class="section-head reveal">
-    <p class="eyebrow">Getting There</p>
-    <h2>Travel</h2>
-    <p class="lead">Everything you need to reach us in Bali</p>
+    <h2>Travel Requirements &amp; Weather</h2>
   </div>
   <div class="grid">
     <div class="lux-card reveal"><div class="ic">&#9992;</div><h3>Flights</h3><p>Everyone flies into Ngurah Rai International (DPS) in Denpasar; AYANA is about 12 km away, a 20 to 30 minute drive.</p><p style="margin-top:10px;">From Toronto (YYZ) there are no nonstops, so plan on one stop through a major hub. The most common connections are through Hong Kong, Taipei, Seoul, Tokyo, Doha, Dubai, and Singapore.</p><p style="margin-top:10px;">Bali is 12 hours ahead of Toronto, so build in a little time to adjust. July is peak season, so book early for the best fares.</p></div>
@@ -452,15 +469,28 @@
 <section class="section" id="stay">
   <div class="section-head reveal">
     <p class="eyebrow">Accommodation</p>
-    <h2>Where To Stay</h2>
-    <p class="lead">All of us together at AYANA</p>
+    <h2>Recommended Stay</h2>
   </div>
   <div class="grid" style="max-width:760px;margin:0 auto;">
     <div class="lux-card reveal" style="border-color: var(--gold-lt); border-width: 1.5px; text-align: left;">
       <h3>RIMBA by AYANA &middot; Resort View Room</h3>
+      <div class="room-carousel">
+        <div class="room-track" id="roomTrack">
+          <img src="rimba-room-2.jpg" alt="RIMBA Resort View Room bedroom" loading="lazy">
+          <img src="rimba-room-1.jpg" alt="RIMBA Resort View Room" loading="lazy">
+          <img src="rimba-room-3.jpg" alt="RIMBA room bathroom" loading="lazy">
+        </div>
+        <button type="button" class="room-nav room-prev" onclick="roomScroll(-1)" aria-label="Previous photo">&lsaquo;</button>
+        <button type="button" class="room-nav room-next" onclick="roomScroll(1)" aria-label="Next photo">&rsaquo;</button>
+        <div class="room-dots" id="roomDots"><span class="active"></span><span></span><span></span></div>
+      </div>
       <p>We recommend that all guests stay in a <strong style="color:var(--palm-dark);font-weight:500;">Resort View Room at RIMBA by AYANA</strong>, where we've secured our best group rate and reserved a room block so everyone can stay together.</p>
-      <p style="margin-top:12px;">Our group rate is <strong style="color:var(--palm-dark);font-weight:500;">$295 CAD per room, per night</strong>, including all taxes and fees, and is available until <strong style="color:var(--palm-dark);font-weight:500;">September 25, 2026</strong>.</p>
-      <p style="margin-top:12px;padding:14px 18px;background:var(--sand);border-radius:8px;border:1px solid var(--line);font-size:0.92rem;">For reference, the current public rate (as of August) is around <strong style="color:var(--palm-dark);font-weight:500;">$425 CAD per night</strong>, so our group rate saves you roughly $130 a night.</p>
+      <div style="margin-top:16px;padding:20px 22px;background:var(--sand);border:1.5px solid var(--gold-lt);border-radius:10px;text-align:center;">
+        <p style="font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);font-weight:500;">Our Group Rate</p>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--palm-dark);line-height:1.1;margin-top:4px;">$295 CAD <span style="font-size:1rem;color:var(--muted);">/ room / night</span></p>
+        <p style="font-size:0.9rem;color:var(--muted);margin-top:6px;">Includes all taxes and fees &middot; held until <strong style="color:var(--palm-dark);font-weight:500;">September 25, 2026</strong></p>
+      </div>
+      <p style="margin-top:10px;font-size:0.85rem;color:var(--muted);">For reference, the current public rate (as of August) is around $425 CAD per night, so this saves you roughly $130 a night.</p>
       <p style="margin-top:12px;">RIMBA is a vibrant, modern resort surrounded by lush Balinese greenery and where most of our guests will be staying. You'll have access to AYANA's incredible resort grounds, multiple pools including the Forest Pool and Three Monkey Pool, plenty of dining options, and activities like yoga and Balinese cultural classes. Think tropical resort getaway meets wedding weekend.</p>
       <p style="margin-top:16px;"><strong style="color:var(--palm-dark);font-weight:500;">Your Resort View Room includes:</strong></p>
       <ul>
@@ -513,7 +543,7 @@
     <div class="field"><label for="b-guests">Names of everyone in your room</label><input id="b-guests" name="guest_names" placeholder="Guests sharing this reservation"></div>
     <div class="field"><label for="b-req">Special requests</label><textarea id="b-req" name="requests" placeholder="Connecting rooms, accessibility needs, a third guest, early check-in, anything else"></textarea></div>
     <div class="center"><button class="btn dark" type="submit" id="bookingBtn">Submit Booking Request</button></div>
-    <p id="bookingStatus" class="center notice" style="min-height:1.4em;"></p>
+    <div id="bookingStatus" class="center notice" style="min-height:1.4em;"></div>
   </form>
 </section>
 
@@ -527,6 +557,7 @@
     <details><summary>What are the travel requirements?</summary><p><strong style="color:var(--palm-dark);font-weight:500;">Passport:</strong> Must be valid for at least 6 months beyond your arrival date, with a couple of blank pages.</p><p style="margin-top:10px;"><strong style="color:var(--palm-dark);font-weight:500;">Visa:</strong> Most nationalities, including Canadians, can get a visa on arrival or e-VOA for about IDR 500,000 (roughly CAD $45), valid 30 days. Apply online in advance at <a class="inline" href="https://evisa.imigrasi.go.id/" target="_blank" rel="noopener">evisa.imigrasi.go.id</a> to skip the queue.</p><p style="margin-top:10px;"><strong style="color:var(--palm-dark);font-weight:500;">Bali Tourist Levy:</strong> Every international visitor pays a one-time IDR 150,000 tourism levy (roughly CAD $12 to $14), separate from the visa fee. Pay online at <a class="inline" href="https://lovebali.baliprov.go.id/" target="_blank" rel="noopener">lovebali.baliprov.go.id</a> before you arrive.</p><p style="margin-top:10px;">Always double-check your country's current requirements before flying.</p></details>
     <details><summary>Can I bring a plus one?</summary><p>Your invitation will include the names of everyone invited to celebrate with us. We kindly ask that you RSVP only for the guests named on your invitation.</p></details>
     <details><summary>What should I wear?</summary><p>We're still finalizing the theme and dress code for the wedding day on July 15, so stay tuned! For now, we kindly ask that guests avoid wearing white or ivory. More details (and outfit inspo) to come.</p></details>
+    <details><summary>What if I want to book a room after the September 25 deadline?</summary><p>Please message Jon and Maggie to see if any rooms are still available at a preferred rate, and let us know how many nights you'd like.</p><p style="margin-top:10px;">We can't guarantee the same rate or availability after the deadline. If a room isn't available through our block, we'll let you know the next steps, which may be to book directly with AYANA on their website at the current rates displayed online.</p></details>
     <details><summary>How do I get from the airport to the resort?</summary><p>We recommend downloading <strong style="color:var(--palm-dark);font-weight:500;">Grab</strong> before your trip. It's Bali's equivalent of Uber and one of the easiest ways to get around the island.</p><p style="margin-top:10px;">AYANA is approximately <strong style="color:var(--palm-dark);font-weight:500;">30 minutes by car from Bali's Ngurah Rai International Airport (DPS)</strong>, depending on traffic. Grab has an official pickup area at the International Arrivals terminal, and you can book a car directly through the app once you arrive.</p><p style="margin-top:10px;">Expect to pay approximately <strong style="color:var(--palm-dark);font-weight:500;">IDR 150,000 to 300,000 ($13 to $25 CAD)</strong>, depending on traffic, demand, and vehicle type. AYANA also offers private airport transfers if you prefer to have a driver waiting for you.</p></details>
     <details><summary>Will the wedding be indoors or outdoors?</summary><p>Both our <strong style="color:var(--palm-dark);font-weight:500;">ceremony and reception will be outdoors</strong>, so dress for warm Bali weather and get ready to celebrate under the sun and stars.</p></details>
     <details><summary>Should I book my flights now?</summary><p><strong style="color:var(--palm-dark);font-weight:500;">Yes!</strong> We recommend booking your flights as soon as possible to secure the best pricing and availability, especially since many of you will be travelling internationally.</p></details>
@@ -539,7 +570,6 @@
 
 <section class="section rsvp" id="rsvp">
   <div class="section-head reveal">
-    <p class="eyebrow">Kindly Reply</p>
     <h2>RSVP</h2>
     <p class="lead">Please respond by January 15, 2027</p>
   </div>
@@ -548,12 +578,8 @@
     <div class="field"><label for="r-email">Email</label><input id="r-email" name="email" type="email" required placeholder="you@email.com"></div>
     <div class="field"><label for="r-attend">Will you join us?</label><select id="r-attend" name="attending"><option>Joyfully accepts</option><option>Regretfully declines</option></select></div>
     <div class="field"><label for="r-count">Number in your party</label><input id="r-count" name="party_size" type="number" min="1" value="1"></div>
-    <div class="field"><label for="r-meal">Meal preference</label><select id="r-meal" name="meal"><option>No preference</option><option>Vegetarian</option><option>Vegan</option><option>Pescatarian</option><option>Halal</option></select></div>
-    <div class="field"><label for="r-diet">Dietary restrictions or allergies</label><input id="r-diet" name="dietary" placeholder="Anything we should know"></div>
-    <div class="field"><label for="r-hotel">Where are you staying? (optional)</label><input id="r-hotel" name="hotel" placeholder="Hotel name"></div>
-    <div class="field"><label for="r-song">A song to get you dancing (optional)</label><input id="r-song" name="song" placeholder="Your request"></div>
     <div class="center"><button class="btn gold" type="submit" id="rsvpBtn">Send RSVP</button></div>
-    <p id="rsvpStatus" class="center notice" style="min-height:1.4em;"></p>
+    <div id="rsvpStatus" class="center notice" style="min-height:1.4em;"></div>
   </form>
 </section>
 
@@ -588,10 +614,21 @@
   </div>
 </section>
 
+<div class="band band-split">
+  <div class="band-photos">
+    <div class="band-half" style="background-image:url('eng-cove.jpg'); background-position: center 60%;"></div>
+    <div class="band-half" style="background-image:url('eng-twirl2.jpg'); background-position: center 72%;"></div>
+  </div>
+  <div class="band-inner reveal">
+    <p class="eyebrow">See you in Bali</p>
+    <h2>Let the celebration begin</h2>
+  </div>
+</div>
+
 <footer>
   <p class="eyebrow" style="color:var(--gold-lt)">See you in paradise</p>
   <p class="names" style="margin-top:16px;">Maggie <span class="amp">&amp;</span> Jonathan</p>
-  <p class="meta">07 &middot; 15 &middot; 2027 &nbsp;&bull;&nbsp; AYANA Resort Bali</p>
+  <p class="meta">July &middot; 15 &middot; 2027 &nbsp;&bull;&nbsp; AYANA Resort Bali</p>
 </footer>
 
 <script>
@@ -627,6 +664,22 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  // RIMBA room carousel
+  function roomScroll(dir) {
+    var t = document.getElementById('roomTrack');
+    if (t) t.scrollBy({ left: dir * t.clientWidth, behavior: 'smooth' });
+  }
+  (function () {
+    var t = document.getElementById('roomTrack');
+    var dots = document.getElementById('roomDots');
+    if (!t || !dots) return;
+    t.addEventListener('scroll', function () {
+      var i = Math.round(t.scrollLeft / t.clientWidth);
+      var spans = dots.children;
+      for (var k = 0; k < spans.length; k++) spans[k].className = (k === i ? 'active' : '');
+    }, { passive: true });
+  })();
+
   // Reveal on scroll
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
@@ -650,9 +703,7 @@
     // If the endpoint isn't set up yet, fall back to email so nothing is lost.
     if (!RSVP_ENDPOINT || RSVP_ENDPOINT.indexOf('PASTE_YOUR') === 0) {
       var body = 'Name: ' + form.name.value + '\nEmail: ' + form.email.value +
-        '\nAttending: ' + form.attending.value + '\nParty size: ' + form.party_size.value +
-        '\nMeal: ' + form.meal.value + '\nDietary: ' + form.dietary.value +
-        '\nHotel: ' + form.hotel.value + '\nSong: ' + form.song.value;
+        '\nAttending: ' + form.attending.value + '\nParty size: ' + form.party_size.value;
       window.location.href = 'mailto:' + RSVP_FALLBACK_EMAIL + '?subject=' +
         encodeURIComponent('RSVP - ' + form.name.value) + '&body=' + encodeURIComponent(body);
       return false;
@@ -664,7 +715,7 @@
 
     var nameVal = form.name.value;
     var data = new URLSearchParams();
-    ['name','email','attending','party_size','meal','dietary','hotel','song'].forEach(function(k){
+    ['name','email','attending','party_size'].forEach(function(k){
       data.append(k, form[k] ? form[k].value : '');
     });
 
