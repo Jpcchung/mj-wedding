@@ -23,7 +23,8 @@
     --shadow: 0 24px 60px -30px rgba(43,51,47,0.45);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; overflow-x: hidden; }
+  html, body { max-width: 100%; }
   body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--ink); line-height: 1.85; font-weight: 300; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
   h1,h2,h3,h4,.serif { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
   .display { font-family: 'Tenor Sans', serif; }
@@ -52,6 +53,8 @@
   }
   nav.solid { background: rgba(250,246,239,0.92); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--line); padding: 9px 26px; }
   .nav-links { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; }
+  .nav-toggle { display: none; background: none; border: 0; color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; padding: 4px 8px; }
+  nav.solid .nav-toggle { color: var(--ink); }
   nav a { color: var(--white); text-decoration: none; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 6px 12px; transition: color .3s, opacity .3s; opacity: .9; }
   .nav-links a:hover { color: var(--gold-lt); }
   nav.solid .nav-links a { color: var(--ink); }
@@ -70,9 +73,43 @@
   @media (max-width: 900px) {
     nav { padding: 10px 14px; gap: 8px; }
     .nav-links { gap: 0; }
-    nav a { padding: 5px 8px; font-size: 0.6rem; letter-spacing: 0.12em; }
+    nav a { padding: 5px 7px; font-size: 0.58rem; letter-spacing: 0.1em; }
     nav .nav-btn { padding: 8px 14px; font-size: 0.58rem; letter-spacing: 0.1em; }
     nav .nav-cta { gap: 7px; }
+  }
+  .cta-short { display: none; }
+  /* On phones: hamburger reveals the section links; keep the two key actions in the bar */
+  @media (max-width: 760px) {
+    nav { justify-content: space-between; padding: 8px 12px; }
+    .nav-toggle { display: block; }
+    .nav-links {
+      position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; align-items: stretch; flex-wrap: nowrap; gap: 0;
+      background: rgba(250,246,239,0.98); backdrop-filter: blur(12px);
+      box-shadow: 0 14px 26px -14px rgba(43,51,47,0.45);
+      max-height: 0; overflow: hidden; transition: max-height .35s ease;
+    }
+    .nav-links.open { max-height: 75vh; overflow-y: auto; }
+    nav .nav-links a { color: var(--ink); text-align: left; padding: 14px 22px; font-size: 0.78rem; letter-spacing: 0.16em; border-bottom: 1px solid var(--line); }
+    nav .nav-links a:hover { background: var(--line); color: var(--gold); }
+    nav .nav-cta { width: auto; gap: 7px; }
+    nav .nav-btn { flex: 0 0 auto; text-align: center; padding: 9px 13px; font-size: 0.62rem; letter-spacing: 0.1em; }
+    .cta-full { display: none; }
+    .cta-short { display: inline; }
+  }
+  @media (max-width: 560px) {
+    .section { padding: 54px 18px; }
+    .section-head { margin-bottom: 34px; }
+    .lux-card { padding: 28px 22px; }
+    .btn { padding: 14px 26px; letter-spacing: 0.16em; font-size: 0.68rem; }
+    .countdown { gap: 20px; }
+    .countdown-strip { padding: 32px 16px; }
+    .band { min-height: 340px; height: 52vh; }
+    .intro p { font-size: 1.25rem; }
+    .rsvp form, .form-light { padding: 0 2px; }
+    .hero .venue { font-size: 0.62rem; letter-spacing: 0.18em; }
+    .hero-cta { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; margin: 0 auto; }
+    .hero-cta .btn { width: 100%; margin-top: 14px; }
   }
 
   /* Hero */
@@ -92,6 +129,27 @@
   .hero-cta .btn { background: var(--gold-lt); color: var(--palm-dark); border-color: var(--gold-lt); }
   .hero-cta .btn:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
   .scroll-cue { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 3; color: var(--white); font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: .8; }
+
+  /* Music toggle */
+  #musicBtn {
+    position: fixed; bottom: 20px; right: 20px; z-index: 90;
+    width: 48px; height: 48px; border-radius: 50%; cursor: pointer;
+    border: 1px solid var(--gold-lt); background: rgba(51,71,58,0.85); color: var(--gold-lt);
+    display: none; align-items: center; justify-content: center; font-size: 1.05rem;
+    box-shadow: 0 8px 22px -10px rgba(43,51,47,0.6); backdrop-filter: blur(6px);
+    transition: background .3s, color .3s, transform .2s;
+  }
+  #musicBtn.visible { display: flex; }
+  #musicBtn:hover { background: var(--gold-lt); color: var(--palm-dark); transform: translateY(-2px); }
+  #musicBtn .bars { display: flex; align-items: flex-end; gap: 2px; height: 15px; }
+  #musicBtn .bars i { display: block; width: 2.5px; background: currentColor; height: 40%; border-radius: 1px; }
+  #musicBtn.playing .bars i { animation: eq 1s ease-in-out infinite; }
+  #musicBtn.playing .bars i:nth-child(2) { animation-delay: .18s; }
+  #musicBtn.playing .bars i:nth-child(3) { animation-delay: .36s; }
+  #musicBtn.playing .bars i:nth-child(4) { animation-delay: .1s; }
+  #musicBtn.muted .bars i { height: 22%; opacity: .5; }
+  @keyframes eq { 0%,100% { height: 25%; } 50% { height: 100%; } }
+  @media (max-width: 560px) { #musicBtn { bottom: 14px; right: 14px; width: 44px; height: 44px; } }
   .scroll-cue span { display: block; width: 1px; height: 46px; background: rgba(255,255,255,.7); margin: 10px auto 0; animation: cue 2.2s ease-in-out infinite; transform-origin: top; }
   @keyframes cue { 0%,100%{ transform: scaleY(.3); opacity:.3;} 50%{ transform: scaleY(1); opacity:1;} }
 
@@ -123,6 +181,7 @@
   .stay-note > div { display: flex; flex-direction: column; align-items: center; text-align: center; }
   .stay-note .stay-len { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--palm-dark); letter-spacing: 0.02em; }
   .stay-note .stay-cap { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .stay-note .stay-dates { font-size: 0.82rem; color: var(--muted); margin-top: 4px; letter-spacing: 0.04em; }
   .stay-note .stay-div { width: 1px; align-self: stretch; background: var(--line); }
   @media (max-width: 560px) { .stay-note { flex-direction: column; gap: 18px; } .stay-note .stay-div { width: 60px; height: 1px; } }
 
@@ -150,6 +209,8 @@
   .tl-item h3 { font-size: 1.9rem; margin: 4px 0 10px; }
   .tl-item p { color: var(--muted); font-size: 1rem; }
   .tl-item a { color: var(--palm); font-size: 0.85rem; }
+  .tl-stay { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .tl-stay span { color: var(--muted); text-transform: none; letter-spacing: 0.02em; font-weight: 400; }
   .tl-item .tl-media figure { position: relative; overflow: hidden; border-radius: 8px; box-shadow: var(--shadow); margin: 0; display: grid; gap: 8px; }
   .tl-item .tl-media img { width: 100%; height: 300px; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
   .tl-item .tl-media figure:hover img { transform: scale(1.04); }
@@ -198,6 +259,10 @@
 
   /* FAQ */
   .faq-wrap { max-width: 760px; margin: 0 auto; }
+  .faq-cat { font-family: 'Jost', sans-serif; font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin: 40px 0 4px; }
+  .faq-cat:first-child { margin-top: 0; }
+  .faq-wrap details ul { margin: 10px 0 0; padding-left: 20px; }
+  .faq-wrap details li { color: var(--muted); font-size: 0.94rem; margin: 4px 0; }
   details { border-bottom: 1px solid var(--line); padding: 22px 4px; }
   details summary { cursor: pointer; list-style: none; font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; color: var(--ink); display: flex; justify-content: space-between; align-items: center; }
   details summary::-webkit-details-marker { display: none; }
@@ -227,6 +292,13 @@
   .form-light input:focus, .form-light select:focus, .form-light textarea:focus { outline: none; border-color: var(--gold); }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; gap: 0; } }
+  .form-note { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; text-align: left; }
+  .req { color: var(--gold); font-weight: 600; }
+  .rsvp .form-note { color: rgba(250,246,239,0.7); }
+  .rsvp .req { color: var(--gold-lt); }
+  .soft-rsvp { margin-top: 26px; padding-top: 26px; border-top: 1px solid rgba(216,184,120,0.35); }
+  .soft-rsvp .soft-intro { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: rgba(250,246,239,0.9); margin-bottom: 20px; text-align: center; }
+  .rsvp textarea { min-height: 84px; resize: vertical; }
 
   /* Buttons */
   .btn { display: inline-block; margin-top: 30px; padding: 16px 46px; background: transparent; color: var(--white); text-decoration: none; letter-spacing: 0.28em; text-transform: uppercase; font-size: 0.72rem; border: 1px solid var(--gold-lt); border-radius: 999px; cursor: pointer; font-family: 'Jost', sans-serif; transition: background .4s, color .4s; }
@@ -272,9 +344,10 @@
   <div class="gate-inner">
     <p class="eyebrow">You're Invited</p>
     <h1>Maggie <span class="amp">&amp;</span> Jonathan</h1>
-    <p class="sub">Please enter the password from your invitation</p>
+    <p class="sub">Enter your full name and the password from your invitation</p>
     <form onsubmit="return checkGate(event)">
-      <input id="gate-pw" type="password" placeholder="Password" autocomplete="off" autofocus>
+      <input id="gate-name" type="text" placeholder="Your full name" autocomplete="name" autofocus>
+      <input id="gate-pw" type="password" placeholder="Password" autocomplete="off">
       <button type="submit">Enter</button>
       <p class="err" id="gate-err"></p>
     </form>
@@ -294,12 +367,98 @@
     } catch (e) {}
   })();
 
+  // ===========================================================
+  // Background music. Starts after the gate is unlocked (a real user
+  // interaction, which browsers allow). Guests can mute at any time and
+  // their choice is remembered.
+  // ===========================================================
+  var MUSIC_VOLUME = 0.35;
+
+  function musicPref() {
+    try { return localStorage.getItem('mj_music'); } catch (e) { return null; }
+  }
+  function setMusicPref(v) {
+    try { localStorage.setItem('mj_music', v); } catch (e) {}
+  }
+  function updateMusicBtn(playing) {
+    var b = document.getElementById('musicBtn');
+    if (!b) return;
+    b.classList.add('visible');
+    b.classList.toggle('playing', playing);
+    b.classList.toggle('muted', !playing);
+    b.setAttribute('aria-label', playing ? 'Mute music' : 'Play music');
+  }
+  function startMusic() {
+    var a = document.getElementById('bgMusic');
+    if (!a) return;
+    if (musicPref() === 'off') { updateMusicBtn(false); return; }
+    a.volume = 0;
+    var p = a.play();
+    if (p && p.catch) p.catch(function () { updateMusicBtn(false); });
+    // Gentle fade in
+    var target = MUSIC_VOLUME, step = target / 30;
+    var fade = setInterval(function () {
+      if (a.volume + step >= target) { a.volume = target; clearInterval(fade); }
+      else { a.volume = Math.min(target, a.volume + step); }
+    }, 60);
+    updateMusicBtn(true);
+  }
+  // The audio element and button appear later in the document, so wait for
+  // the DOM before wiring up the toggle.
+  function initMusicControls() {
+    var b = document.getElementById('musicBtn');
+    var a = document.getElementById('bgMusic');
+    if (!b || !a) return;
+    b.addEventListener('click', function () {
+      if (a.paused) {
+        a.volume = MUSIC_VOLUME;
+        var p = a.play();
+        if (p && p.catch) p.catch(function () {});
+        setMusicPref('on');
+        updateMusicBtn(true);
+      } else {
+        a.pause();
+        setMusicPref('off');
+        updateMusicBtn(false);
+      }
+    });
+    // Keep the icon in sync if playback stops on its own.
+    a.addEventListener('pause', function () { updateMusicBtn(false); });
+    a.addEventListener('play', function () { updateMusicBtn(true); });
+    // If already past the gate this session, show the control.
+    try {
+      if (sessionStorage.getItem('mj_ok') === '1') updateMusicBtn(!a.paused);
+    } catch (e) {}
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMusicControls);
+  } else {
+    initMusicControls();
+  }
+
+  // Log a visit once per browser session to the "Visits" tab of the Google Sheet.
+  function logVisit(name) {
+    try {
+      if (sessionStorage.getItem('mj_logged') === '1') return;
+      var ep = "https://script.google.com/macros/s/AKfycbyx9ii78Vk28AGbHMWpdMa-610Rlbq2h2XD5mNFRbZXfVeq5nZpJag1xdDXBehShwmRbQ/exec";
+      var d = new URLSearchParams();
+      d.append('form', 'visit');
+      d.append('name', name || '(no name)');
+      fetch(ep, { method: 'POST', body: d, mode: 'no-cors' }).catch(function () {});
+      sessionStorage.setItem('mj_logged', '1');
+    } catch (e) {}
+  }
+
   function checkGate(e) {
     e.preventDefault();
+    var name = (document.getElementById('gate-name').value || '').trim();
     var pw = document.getElementById('gate-pw').value;
     var err = document.getElementById('gate-err');
-    var expectedHash = '067e4fe5319d9955e8b006baeb3efb2059bdde57bd701e782b8f437471a31627';
+    var expectedHash = 'c2d59dab4f088d9bd3ce5c6d8f06a09a6623a1f6df216f959e2d81177c615b80';
+    if (!name) { err.textContent = 'Please enter your full name.'; return false; }
     function unlock() {
+      logVisit(name);
+      startMusic();
       try { sessionStorage.setItem('mj_ok', '1'); } catch (e) {}
       var g = document.getElementById('gate');
       g.style.transition = 'opacity .5s'; g.style.opacity = '0';
@@ -316,14 +475,23 @@
       });
     } else {
       // Fallback for environments without SubtleCrypto (e.g. opening the file locally)
-      if (pw === atob('a2F0b3dhdG8=')) unlock(); else fail();
+      if (pw === atob('a2F0bw==')) unlock(); else fail();
     }
     return false;
   }
 </script>
 
+<!-- Background music: drop your licensed track in as music.mp3 -->
+<audio id="bgMusic" loop preload="none">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+<button id="musicBtn" type="button" aria-label="Toggle music">
+  <span class="bars"><i></i><i></i><i></i><i></i></span>
+</button>
+
 <nav id="nav">
-  <div class="nav-links">
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  <div class="nav-links" id="navLinks">
     <a href="#home">Home</a>
     <a href="#schedule">Schedule</a>
     <a href="#travel">Travel</a>
@@ -333,8 +501,8 @@
     <a href="#explore">Explore</a>
   </div>
   <div class="nav-cta">
-    <a href="#booking" class="nav-btn">Reserve Group Rate by Sep 25</a>
-    <a href="#rsvp" class="nav-btn">RSVP by Jan 15</a>
+    <a href="#booking" class="nav-btn"><span class="cta-full">Reserve Group Rate by Sep 25</span><span class="cta-short">Reserve Room</span></a>
+    <a href="#rsvp" class="nav-btn"><span class="cta-full">RSVP by Jan 15</span><span class="cta-short">RSVP</span></a>
   </div>
 </nav>
 
@@ -388,9 +556,9 @@
     <p class="lead">Come for the wedding, stay for the adventure</p>
   </div>
   <div class="stay-note reveal">
-    <div><span class="stay-cap">Suggested minimum stay</span><span class="stay-len">3 Days &middot; 2 Nights</span></div>
+    <div><span class="stay-cap">Suggested minimum stay</span><span class="stay-len">3 Days &middot; 2 Nights</span><span class="stay-dates">July 14 to 16</span></div>
     <div class="stay-div"></div>
-    <div><span class="stay-cap">The full adventure</span><span class="stay-len">7 Days &middot; 6 Nights</span></div>
+    <div><span class="stay-cap">The full adventure</span><span class="stay-len">7 Days &middot; 6 Nights</span><span class="stay-dates">July 13 to 19</span></div>
   </div>
   <div class="timeline">
     <div class="tl-item reveal"><span class="dot"></span>
@@ -398,6 +566,7 @@
         <span class="time">Tue &middot; July 13</span>
         <h3>Group Activities</h3>
         <p>For those arriving early, we're planning something active (pilates / yoga or golf / pickleball), an afternoon at a beach club, and dinner in the evening.</p>
+        <p class="tl-stay">Recommended stay <span>&middot; RIMBA by AYANA &middot; July 13 to 16</span></p>
       </div>
       <div class="tl-media">
         <figure><img src="https://files-r2.ayana.com/r/chapter-01_czUy0A.webp" alt="Bali clifftops and ocean" loading="lazy"></figure>
@@ -408,6 +577,7 @@
         <span class="time">Wed &middot; July 14</span>
         <h3>Welcome Party</h3>
         <p>A little pre-wedding get-together to kick off the week. Come raise a glass, meet and mingle, and settle into vacation mode with us.</p>
+        <p class="tl-stay">Recommended stay <span>&middot; RIMBA by AYANA &middot; July 13 to 16</span></p>
       </div>
       <div class="tl-media">
         <figure><img src="https://files-r2.ayana.com/r/kv1_C3IWlQ.webp" alt="Cliffside sunset drinks" loading="lazy"></figure>
@@ -419,6 +589,7 @@
         <h3>Ceremony &amp; Reception</h3>
         <p>Join us as we exchange vows overlooking the sea, followed by dinner, drinks, and dancing under the stars.</p>
         <a href="https://maps.google.com/?q=AYANA+Resort+Bali+Jimbaran" target="_blank" rel="noopener">AYANA SKY, Jimbaran &rsaquo;</a>
+        <p class="tl-stay">Recommended stay <span>&middot; RIMBA by AYANA &middot; July 13 to 16</span></p>
       </div>
       <div class="tl-media">
         <figure><img src="https://files-r2.ayana.com/media/08207e40-9a46-4b9b-a76a-3c7c6aa340d0/hero_pc.webp" alt="AYANA SKY oceanfront ceremony" loading="lazy"></figure>
@@ -429,6 +600,7 @@
         <span class="time">Fri &middot; July 16</span>
         <h3>Rest &amp; Reset</h3>
         <p>A slower day to sleep in, soak up the resort, and recover from the celebrations. After breakfast, we will check out of the hotel. If your Bali adventure ends here, this is where we'll say goodbye as you make your way to the airport. If you're staying on for more fun, the celebration continues at a private villa. More details to come, we'll be reaching out soon to see who's in!</p>
+        <p class="tl-stay">Recommended stay <span>&middot; Private villa &middot; July 16 to 19 (details to come; rates expected to be lower than AYANA)</span></p>
       </div>
       <div class="tl-media">
         <figure><img src="https://files-r2.ayana.com/r/01-chapters-images-11_SuePDA.webp" alt="AYANA ocean pools" loading="lazy"></figure>
@@ -439,6 +611,7 @@
         <span class="time">Fri to Mon &middot; July 16 &ndash; 19</span>
         <h3>The Adventure Continues: Ubud or Canggu</h3>
         <p>We're taking the celebration on the road for three more nights, July 16 to 19, with a group stay in either the lush rice terraces of Ubud or the laid-back beaches of Canggu. We'll make a private villa our home base for the next few days: think slow mornings, poolside hangs, exploring, and a few adventures together. Come for as much or as little of the fun as you like. We'll share more details on the villa, location, activities, and pricing soon.</p>
+        <p class="tl-stay">Recommended stay <span>&middot; Private villa &middot; July 16 to 19 (details to come; rates expected to be lower than AYANA)</span></p>
       </div>
       <div class="tl-media">
         <figure><img src="villa.jpg" alt="Private villa with pool at sunset" loading="lazy"></figure>
@@ -453,8 +626,28 @@
   </div>
   <div class="grid">
     <div class="lux-card reveal"><div class="ic">&#9992;</div><h3>Flights</h3><p>Everyone flies into Ngurah Rai International (DPS) in Denpasar; AYANA is about 12 km away, a 20 to 30 minute drive.</p><p style="margin-top:10px;">From Toronto (YYZ) there are no nonstops, so plan on one stop through a major hub. The most common connections are through Hong Kong, Taipei, Seoul, Tokyo, Doha, Dubai, and Singapore.</p><p style="margin-top:10px;">Bali is 12 hours ahead of Toronto, so build in a little time to adjust. July is peak season, so book early for the best fares.</p></div>
-    <div class="lux-card reveal"><div class="ic">&#128452;</div><h3>Passport &amp; visa</h3><p>Passport valid 6+ months with blank pages. Most nationalities, including Canadians, qualify for visa on arrival or e-VOA (about IDR 500,000, 30 days). Apply online in advance at <a class="inline" href="https://evisa.imigrasi.go.id/" target="_blank" rel="noopener">evisa.imigrasi.go.id</a> to skip the queue.</p><p style="margin-top:10px;"><strong style="color:var(--palm-dark);font-weight:500;">Bali Tourist Levy:</strong> Every international tourist entering Bali pays a one-time IDR 150,000 tourism levy (roughly CAD $12 to $14, depending on exchange rates), separate from the visa fee. Pay online in advance at <a class="inline" href="https://lovebali.baliprov.go.id/" target="_blank" rel="noopener">lovebali.baliprov.go.id</a>.</p></div>
+    <div class="lux-card reveal"><div class="ic">&#128663;</div><h3>Getting around</h3><p>Download <strong style="color:var(--palm-dark);font-weight:500;">Grab or Gojek</strong>, Bali's two main ride-hailing apps. They work like Uber or Lyft and are an easy way to get around without negotiating fares.</p><p style="margin-top:10px;">Book directly through the app and meet your assigned driver at the designated pickup point for clear pricing. For day trips, hiring a private driver for the day is also affordable and convenient.</p></div>
     <div class="lux-card reveal"><div class="ic">&#9925;</div><h3>Weather in July</h3><p>Dry season and the loveliest time of year: sunny, around 27&deg;C / 81&deg;F, cooler evenings, little rain, with a touch of tropical humidity.</p></div>
+  </div>
+  <div class="grid" style="margin-top:24px;">
+    <div class="lux-card reveal" style="text-align:left;">
+      <div class="ic">&#128452;</div><h3>Entry requirements</h3>
+      <p style="margin-top:16px;"><strong style="color:var(--palm-dark);font-weight:500;font-size:1.05rem;">Passport</strong></p>
+      <p style="margin-top:4px;">Make sure your passport is valid for at least 6 months from your date of arrival in Indonesia and has blank pages available.</p>
+      <p style="margin-top:16px;"><strong style="color:var(--palm-dark);font-weight:500;font-size:1.05rem;">Visa / e-VOA</strong></p>
+      <p style="margin-top:4px;">Most of our guests, including Canadian passport holders, are eligible for a Visa on Arrival (VOA) or Electronic Visa on Arrival (e-VOA).</p>
+      <ul>
+        <li>Cost: IDR 500,000 (approximately $40 to $45 CAD)</li>
+        <li>Valid for a 30-day stay</li>
+        <li>Apply for your e-VOA up to 90 days before entering Indonesia</li>
+        <li>Applying online before your trip makes arrival easier and avoids the Visa on Arrival queue</li>
+      </ul>
+      <p style="margin-top:10px;">Apply at the official Indonesian Immigration website: <a class="inline" href="https://evisa.imigrasi.go.id/" target="_blank" rel="noopener">evisa.imigrasi.go.id</a></p>
+      <p style="margin-top:8px;">Visa requirements vary by nationality, so please double-check the requirements for the passport you'll be travelling with.</p>
+      <p style="margin-top:16px;"><strong style="color:var(--palm-dark);font-weight:500;font-size:1.05rem;">Bali Tourist Levy</strong></p>
+      <p style="margin-top:4px;">Bali charges international visitors a separate one-time IDR 150,000 levy (approximately $12 to $14 CAD), separate from your visa fee. Pay online before you arrive so there's one less thing to worry about when you land.</p>
+      <p style="margin-top:8px;">Pay at the official Bali government website: <a class="inline" href="https://lovebali.baliprov.go.id/" target="_blank" rel="noopener">lovebali.baliprov.go.id</a></p>
+    </div>
   </div>
 </section>
 
@@ -497,14 +690,14 @@
         <li>Spacious <strong>42 sqm</strong> room</li>
         <li>Choice of <strong>one king bed or two twin beds</strong></li>
         <li><strong>Daily breakfast for two</strong></li>
-        <li>Maximum <strong>3 adults per room</strong></li>
+        <li>Maximum <strong>3 adults per room</strong> (extra charge for the 3rd person)</li>
         <li>Children ages <strong>0 to 3 stay free</strong></li>
         <li>Access to AYANA resort facilities</li>
         <li>Check-in <strong>3:00 PM</strong>, check-out <strong>12:00 PM</strong></li>
       </ul>
-      <p style="margin-top:14px;">We recommend staying at least <strong style="color:var(--palm-dark);font-weight:500;">2 nights, from July 14 to July 16</strong>. A rough idea of your dates is perfectly fine for now. It's generally easier to add nights later at the same group rate, but we may not be able to add additional rooms once our room block is full.</p>
+      <p style="margin-top:14px;">We recommend staying for the full experience (<strong style="color:var(--palm-dark);font-weight:500;">3 nights, from July 13 to July 16</strong>). A rough idea of your dates is perfectly fine for now. It's generally easier to add nights later at the same group rate, but we may not be able to add additional rooms once our room block is full.</p>
       <p style="margin-top:12px;">If you're not ready to book by September 25, no worries. You can still book afterwards, but we won't be able to guarantee the same rate or availability.</p>
-      <p style="margin-top:12px;">Please let us know about any special requests, including connecting rooms, additional rooms, a third guest, or accessibility needs. If your plans change after booking, just let us know as early as possible so we have the best chance of adjusting or releasing your room without penalty.</p>
+      <p style="margin-top:12px;">Please let us know about any special requests, including connecting rooms, additional rooms, a third guest, or accessibility needs. If there are any changes to your plans, please contact Maggie and Jon.</p>
       <p style="margin-top:16px;"><a class="inline" href="https://www.ayana.com/bali/rimba-by-ayana/" target="_blank" rel="noopener">See RIMBA by AYANA</a> &middot; <a class="inline" href="https://www.ayana.com/bali/rimba-by-ayana/rooms/" target="_blank" rel="noopener">View RIMBA rooms</a></p>
     </div>
   </div>
@@ -518,30 +711,30 @@
   </div>
   <div class="lux-card reveal" style="max-width:680px;margin:0 auto 40px;text-align:left;">
     <p><strong style="color:var(--palm-dark);font-weight:500;">Deposit &amp; payment:</strong> A <strong style="color:var(--palm-dark);font-weight:500;">50% deposit</strong> will be required by <strong style="color:var(--palm-dark);font-weight:500;">September 25, 2026</strong> to secure your room at our group rate. Payment will be made directly through our wedding planners.</p>
-    <p style="margin-top:12px;">If your travel plans change after booking, please let us know as soon as possible. We'll coordinate with our planners to make any necessary changes and arrange a refund where possible.</p>
+    <p style="margin-top:12px;">If there are any changes to your plans, please contact Maggie and Jon.</p>
     <p style="margin-top:12px;">After you submit your form, we will contact you with next steps for the deposit payment.</p>
   </div>
   <form id="bookingForm" class="form-light reveal" onsubmit="return submitBooking(event)">
-    <div class="field"><label for="b-name">Name the reservation is under</label><input id="b-name" name="booking_name" required placeholder="Lead guest full name"></div>
+    <p class="form-note">Fields marked <span class="req">*</span> are required.</p>
+    <div class="field"><label for="b-name">Name the reservation is under <span class="req">*</span></label><input id="b-name" name="booking_name" required placeholder="Lead guest full name"></div>
     <div class="form-row">
-      <div class="field"><label for="b-email">Email</label><input id="b-email" name="email" type="email" required placeholder="you@email.com"></div>
-      <div class="field"><label for="b-phone">Phone / WhatsApp (with country code)</label><input id="b-phone" name="phone" required placeholder="+1 416 555 0123"></div>
+      <div class="field"><label for="b-email">Email <span class="req">*</span></label><input id="b-email" name="email" type="email" required placeholder="you@email.com"></div>
+      <div class="field"><label for="b-phone">Phone / WhatsApp with country code <span class="req">*</span></label><input id="b-phone" name="phone" required placeholder="+1 416 555 0123"></div>
     </div>
     <div class="form-row">
-      <div class="field"><label for="b-in">Check-in date</label><input id="b-in" name="checkin" type="date"></div>
-      <div class="field"><label for="b-out">Check-out date</label><input id="b-out" name="checkout" type="date"></div>
+      <div class="field"><label for="b-in">Check-in date <span class="req">*</span></label><input id="b-in" name="checkin" type="date" required></div>
+      <div class="field"><label for="b-out">Check-out date <span class="req">*</span></label><input id="b-out" name="checkout" type="date" required></div>
     </div>
     <div class="form-row">
-      <div class="field"><label for="b-rooms">Number of rooms</label><input id="b-rooms" name="rooms" type="number" min="1" value="1"></div>
-      <div class="field"><label for="b-bed">Bed preference</label><select id="b-bed" name="bed"><option>No preference</option><option>One king bed</option><option>Two twin beds</option></select></div>
+      <div class="field"><label for="b-rooms">Number of rooms <span class="req">*</span></label><input id="b-rooms" name="rooms" type="number" min="1" value="1" required></div>
+      <div class="field"><label for="b-bed">Bed preference <span class="req">*</span></label><select id="b-bed" name="bed" required><option value="" disabled selected>Please select</option><option>No preference</option><option>One king bed</option><option>Two twin beds</option></select></div>
     </div>
     <div class="form-row">
-      <div class="field"><label for="b-adults">Number of adults</label><input id="b-adults" name="adults" type="number" min="1" value="1"></div>
-      <div class="field"><label for="b-children">Number of children</label><input id="b-children" name="children" type="number" min="0" value="0"></div>
+      <div class="field"><label for="b-adults">Number of adults <span class="req">*</span></label><input id="b-adults" name="adults" type="number" min="1" value="1" required></div>
+      <div class="field"><label for="b-children">Number of children (Optional)</label><input id="b-children" name="children" type="number" min="0" value="0"></div>
     </div>
-    <div class="field"><label for="b-ages">Children's ages (ages 0 to 3 stay free)</label><input id="b-ages" name="children_ages" placeholder="e.g. 2 and 6"></div>
-    <div class="field"><label for="b-guests">Names of everyone in your room</label><input id="b-guests" name="guest_names" placeholder="Guests sharing this reservation"></div>
-    <div class="field"><label for="b-req">Special requests</label><textarea id="b-req" name="requests" placeholder="Connecting rooms, accessibility needs, a third guest, early check-in, anything else"></textarea></div>
+    <div class="field"><label for="b-guests">Names of everyone in your room <span class="req">*</span></label><input id="b-guests" name="guest_names" required placeholder="Everyone sharing this reservation"></div>
+    <div class="field"><label for="b-req">Special requests (Optional)</label><textarea id="b-req" name="requests" placeholder="Connecting rooms, accessibility needs, a third guest, early check-in, anything else"></textarea></div>
     <div class="center"><button class="btn dark" type="submit" id="bookingBtn">Submit Booking Request</button></div>
     <div id="bookingStatus" class="center notice" style="min-height:1.4em;"></div>
   </form>
@@ -554,17 +747,37 @@
     <p class="lead">Everything you may be wondering</p>
   </div>
   <div class="faq-wrap reveal">
-    <details><summary>What are the travel requirements?</summary><p><strong style="color:var(--palm-dark);font-weight:500;">Passport:</strong> Must be valid for at least 6 months beyond your arrival date, with a couple of blank pages.</p><p style="margin-top:10px;"><strong style="color:var(--palm-dark);font-weight:500;">Visa:</strong> Most nationalities, including Canadians, can get a visa on arrival or e-VOA for about IDR 500,000 (roughly CAD $45), valid 30 days. Apply online in advance at <a class="inline" href="https://evisa.imigrasi.go.id/" target="_blank" rel="noopener">evisa.imigrasi.go.id</a> to skip the queue.</p><p style="margin-top:10px;"><strong style="color:var(--palm-dark);font-weight:500;">Bali Tourist Levy:</strong> Every international visitor pays a one-time IDR 150,000 tourism levy (roughly CAD $12 to $14), separate from the visa fee. Pay online at <a class="inline" href="https://lovebali.baliprov.go.id/" target="_blank" rel="noopener">lovebali.baliprov.go.id</a> before you arrive.</p><p style="margin-top:10px;">Always double-check your country's current requirements before flying.</p></details>
+    <p class="faq-cat">RSVP &amp; Guests</p>
+    <details><summary>When is the RSVP deadline, and what if I can't confirm by then?</summary><p>Our official RSVP deadline is January 15, 2027, but if you already know whether you'll be joining us, we'd really appreciate an early RSVP to help us plan!</p><p style="margin-top:10px;">We know planning for a destination wedding takes a little extra coordination. If you're unable to confirm by then, please reach out to Maggie or Jonathan and we'll figure out a plan together.</p></details>
     <details><summary>Can I bring a plus one?</summary><p>Your invitation will include the names of everyone invited to celebrate with us. We kindly ask that you RSVP only for the guests named on your invitation.</p></details>
-    <details><summary>What should I wear?</summary><p>We're still finalizing the theme and dress code for the wedding day on July 15, so stay tuned! For now, we kindly ask that guests avoid wearing white or ivory. More details (and outfit inspo) to come.</p></details>
+
+    <p class="faq-cat">Travel &amp; Getting There</p>
+    <details><summary>Should I book my flights now?</summary><p>Yes! We recommend booking your flights as soon as possible to secure the best pricing and availability, especially since many of you will be travelling internationally.</p></details>
+    <details><summary>What are the travel requirements?</summary><p>Passport: Make sure your passport is valid for at least 6 months from your date of arrival in Indonesia and has blank pages available.</p><p style="margin-top:10px;">Visa / e-VOA: Most of our guests, including Canadian passport holders, are eligible for a Visa on Arrival (VOA) or Electronic Visa on Arrival (e-VOA).</p><ul><li>Cost: IDR 500,000 (approximately $40 to $45 CAD)</li><li>Valid for a 30-day stay</li><li>Apply for your e-VOA up to 90 days before entering Indonesia</li><li>Applying online before your trip makes arrival easier and avoids the Visa on Arrival queue</li></ul><p style="margin-top:10px;">Apply at the official Indonesian Immigration website: <a class="inline" href="https://evisa.imigrasi.go.id/" target="_blank" rel="noopener">evisa.imigrasi.go.id</a>. Visa requirements vary by nationality, so please double-check the requirements for the passport you'll be travelling with.</p><p style="margin-top:10px;">Bali Tourist Levy: Bali charges international visitors a separate one-time IDR 150,000 levy (approximately $12 to $14 CAD), separate from your visa fee. Pay online before you arrive at <a class="inline" href="https://lovebali.baliprov.go.id/" target="_blank" rel="noopener">lovebali.baliprov.go.id</a>.</p></details>
+    <details><summary>How do I get from the airport to the resort?</summary><p>We recommend downloading Grab or Gojek before your trip. They're Bali's equivalent of Uber and one of the easiest ways to get around the island.</p><p style="margin-top:10px;">AYANA is approximately 30 minutes by car from Bali's Ngurah Rai International Airport (DPS), depending on traffic. Grab and Gojek both have official pickup areas at the International Arrivals terminal, and you can book a car directly through either app once you arrive.</p><p style="margin-top:10px;">Expect to pay approximately IDR 150,000 to 300,000 ($13 to $25 CAD), depending on traffic, demand, and vehicle type. AYANA also offers private airport transfers if you prefer to have a driver waiting for you.</p></details>
+    <details><summary>What's the best way to get around Bali?</summary><p>We recommend downloading Grab or Gojek, Bali's two main ride-hailing apps. They work similarly to Uber or Lyft and are an easy way to get around without having to negotiate fares.</p><p style="margin-top:10px;">At the airport and in busy tourist areas, you may be approached by independent drivers offering rides. For clear pricing and peace of mind, we recommend booking directly through the Grab or Gojek app and meeting your assigned driver at the designated pickup point.</p><p style="margin-top:10px;">For longer day trips or exploring multiple areas of Bali, hiring a private driver for the day is also a convenient and affordable option.</p></details>
+    <details><summary>What if my travel plans change?</summary><p>We know plans can change! We'd appreciate it if you could let us know as soon as possible. If you booked your room through our wedding planners, please reach out to Maggie or Jon and we'll coordinate any changes accordingly.</p></details>
+
+    <details><summary>Do I need any vaccines for Bali?</summary><p>There are no special vaccines required to travel to Bali, but it's recommended that your routine vaccinations are up to date.</p><p style="margin-top:10px;">Travel health authorities also commonly recommend Hepatitis A and Hepatitis B, with Typhoid worth considering depending on your travel plans.</p><p style="margin-top:10px;">We recommend checking with your doctor or a travel health clinic about 6 weeks before your trip for advice based on your personal health and itinerary.</p><p style="margin-top:10px;">For the latest official recommendations, please review the Government of Canada's travel health guidance for Indonesia: <a class="inline" href="https://travel.gc.ca/destinations/indonesia#health" target="_blank" rel="noopener">travel.gc.ca/destinations/indonesia</a></p></details>
+    <details><summary>Do I need travel insurance?</summary><p>Yes! We strongly recommend that everyone purchase travel insurance for the trip.</p><p style="margin-top:10px;">You may already have travel insurance through your credit card or employer benefits, so check your existing coverage before purchasing a separate policy.</p></details>
+    <details><summary>What is Bali Belly and how can I avoid it?</summary><p>"Bali Belly" is the common nickname for traveller's diarrhea or an upset stomach, usually caused by consuming contaminated food or water.</p><p style="margin-top:10px;">A few simple precautions can help reduce your risk:</p><ul><li>Drink bottled or properly filtered water and avoid drinking tap water</li><li>Use bottled water for brushing your teeth if you want to be extra cautious</li><li>Be mindful of ice and choose reputable restaurants and bars</li><li>Choose busy restaurants with high customer turnover, where food is more likely to be freshly prepared rather than sitting out</li><li>Eat food that is freshly prepared and thoroughly cooked</li><li>Wash or sanitize your hands regularly, especially before eating</li><li>Be cautious with raw foods, salads and unpeeled fruits if you're unsure how they were prepared</li></ul><p style="margin-top:10px;">Don't let this scare you from enjoying Bali's amazing food! Just use good judgement, especially when it comes to food and water.</p><p style="margin-top:10px;">For more information, see the Government of Canada's food and water safety guidelines for travellers: <a class="inline" href="https://travel.gc.ca/travelling/health-safety/food-water" target="_blank" rel="noopener">travel.gc.ca/travelling/health-safety/food-water</a></p></details>
+
+    <p class="faq-cat">Where to Stay</p>
     <details><summary>What if I want to book a room after the September 25 deadline?</summary><p>Please message Jon and Maggie to see if any rooms are still available at a preferred rate, and let us know how many nights you'd like.</p><p style="margin-top:10px;">We can't guarantee the same rate or availability after the deadline. If a room isn't available through our block, we'll let you know the next steps, which may be to book directly with AYANA on their website at the current rates displayed online.</p></details>
-    <details><summary>How do I get from the airport to the resort?</summary><p>We recommend downloading <strong style="color:var(--palm-dark);font-weight:500;">Grab</strong> before your trip. It's Bali's equivalent of Uber and one of the easiest ways to get around the island.</p><p style="margin-top:10px;">AYANA is approximately <strong style="color:var(--palm-dark);font-weight:500;">30 minutes by car from Bali's Ngurah Rai International Airport (DPS)</strong>, depending on traffic. Grab has an official pickup area at the International Arrivals terminal, and you can book a car directly through the app once you arrive.</p><p style="margin-top:10px;">Expect to pay approximately <strong style="color:var(--palm-dark);font-weight:500;">IDR 150,000 to 300,000 ($13 to $25 CAD)</strong>, depending on traffic, demand, and vehicle type. AYANA also offers private airport transfers if you prefer to have a driver waiting for you.</p></details>
-    <details><summary>Will the wedding be indoors or outdoors?</summary><p>Both our <strong style="color:var(--palm-dark);font-weight:500;">ceremony and reception will be outdoors</strong>, so dress for warm Bali weather and get ready to celebrate under the sun and stars.</p></details>
-    <details><summary>Should I book my flights now?</summary><p><strong style="color:var(--palm-dark);font-weight:500;">Yes!</strong> We recommend booking your flights as soon as possible to secure the best pricing and availability, especially since many of you will be travelling internationally.</p></details>
-    <details><summary>When is the RSVP deadline, and what if I can't confirm by then?</summary><p>Please RSVP by <strong style="color:var(--palm-dark);font-weight:500;">January 15, 2027</strong>. We know planning for a destination wedding takes a little extra coordination. If you're unable to confirm by then, please reach out to Maggie or Jonathan and we'll figure out a plan together.</p></details>
-    <details><summary>What if my travel plans change?</summary><p>We know plans can change! We'd appreciate it if you could let us know as soon as possible. If you booked your room through our wedding planners, please reach out to <strong style="color:var(--palm-dark);font-weight:500;">Maggie or Jon</strong> and we'll coordinate any changes accordingly.</p></details>
-    <details><summary>Can I get more details about the other wedding week events?</summary><p>We're still finalizing the details, but we'd be happy to share what we're thinking so far, including <strong style="color:var(--palm-dark);font-weight:500;">activities, locations, timing, and estimated costs</strong> to help you plan your trip. Message Maggie or Jon anytime, and we'll be sharing more with everyone over the next few weeks.</p><p style="margin-top:10px;">We'll ask everyone to confirm attendance for these events later on. In the meantime, if you already know you'd like to join, a heads-up helps us plan the best experience for everyone.</p></details>
-    <details><summary>Who should I contact with questions?</summary><p>We're Type A planners, so you're in good hands. Feel free to reach out to <strong style="color:var(--palm-dark);font-weight:500;">Maggie or Jon anytime</strong> with questions about the wedding, accommodations, travel, Bali, or anything else. We're always happy to help.</p><p style="margin-top:10px;">For booking and AYANA policy questions, our planners can also help: <strong style="color:var(--palm-dark);font-weight:500;">Debora Louis</strong> (<a class="inline" href="https://wa.me/6281222828907" target="_blank" rel="noopener">WhatsApp +62 812-2282-8907</a>) and <strong style="color:var(--palm-dark);font-weight:500;">Febe Febrina</strong> (<a class="inline" href="https://wa.me/6281805515604" target="_blank" rel="noopener">WhatsApp +62 818-0551-5604</a>).</p></details>
+    <details><summary>Can I book a different hotel and still attend the wedding?</summary><p>Absolutely! While we recommend staying at RIMBA by AYANA so you can be close to everyone, you're welcome to stay elsewhere.</p><p style="margin-top:10px;">AYANA also has three other hotels on the same resort grounds: AYANA Resort, AYANA Segara, and AYANA Villas. If you'd prefer one of these, let us know and we can help coordinate your booking.</p><p style="margin-top:10px;">If you choose to stay outside of AYANA, no problem! We'll share the wedding day schedule closer to the date. We just ask that you plan to arrive at least 30 minutes before the ceremony begins.</p></details>
+    <details><summary>What is there to do at AYANA? Is the resort all-inclusive?</summary><p>AYANA is essentially a destination of its own, spread across 90 hectares overlooking the ocean, so there's plenty to do without leaving the resort.</p><p style="margin-top:10px;">Your stay is not all-inclusive, so meals, drinks, spa treatments, and certain activities are generally separate from your room rate. However, our RIMBA group rate includes daily breakfast for two.</p><p style="margin-top:10px;">Across the resort you'll have access to:</p><ul><li>14 pools and beach areas, from RIMBA's tropical pools to cliffside infinity pools and the private Kubu Beach</li><li>30 restaurants, caf&eacute;s and bars spanning Indonesian, Japanese, Italian, Mediterranean, Chinese, seafood and international cuisine</li><li>The iconic Rock Bar, built into the cliffs over the Indian Ocean, a favourite for sunset drinks</li><li>Kubu Beach, AYANA's secluded white-sand beach</li><li>AYANA Spa, with 40+ treatments and a famous seawater thalassotherapy pool</li><li>50+ activities and experiences, including yoga, aerial yoga, tennis, putting golf and wellness sessions</li><li>AYANA Farm, a 2-hectare organic farm with culinary and cultural experiences</li><li>SAKA Museum, exploring Balinese art and culture</li><li>Gyms, jogging trails, kids' activities and plenty of places to explore</li></ul><p style="margin-top:10px;">There's also a complimentary resort tram connecting the different areas of AYANA, so you can easily explore the pools, restaurants, beach and activities no matter which AYANA hotel you're staying at. We definitely recommend leaving yourself some downtime to enjoy the resort with everyone!</p></details>
+    <details><summary>I'm planning to travel alone. Can I be paired with someone for accommodations?</summary><p>Absolutely! If you're travelling solo and would be interested in sharing accommodations, please let Maggie or Jon know.</p><p style="margin-top:10px;">We'll keep track of anyone else who is travelling solo and interested in sharing, and can connect you with another guest of the same gender if you're both comfortable with the arrangement.</p></details>
+
+    <p class="faq-cat">The Wedding Day</p>
+    <details><summary>What is the timeline for the wedding day?</summary><p>We're still finalizing all the details! We'll share the full wedding day schedule closer to the date, including arrival time, ceremony, reception, and everything in between.</p></details>
+    <details><summary>Will the wedding be indoors or outdoors?</summary><p>Both our ceremony and reception will be outdoors, so dress for warm Bali weather and get ready to celebrate under the sun and stars.</p></details>
+    <details><summary>What should I wear?</summary><p>We're still finalizing the theme and dress code for the wedding day on July 15, so stay tuned! For now, we kindly ask that guests avoid wearing white or ivory. More details (and outfit inspo) to come.</p></details>
+    <details><summary>What if I have a dietary restriction?</summary><p>No worries! We'll confirm meal selections with everyone closer to the wedding and give you an opportunity to let us know about any dietary restrictions or allergies.</p></details>
+
+    <p class="faq-cat">Staying Connected</p>
+    <details><summary>Will we receive updates or be able to connect with other guests?</summary><p>Yes! Closer to the wedding, we'll create a group chat or page where we can share important updates and everyone can connect and coordinate with other guests.</p><p style="margin-top:10px;">Whether you're looking for someone to explore Bali with, coordinate transportation, or make plans by the pool, we hope this makes it easy!</p></details>
+    <details><summary>Can I get more details about the other wedding week events?</summary><p>We're still finalizing the details, but we'd be happy to share what we're thinking so far, including activities, locations, timing, and estimated costs to help you plan your trip. Message Maggie or Jon anytime, and we'll be sharing more with everyone over the next few weeks.</p><p style="margin-top:10px;">We'll ask everyone to confirm attendance for these events later on. In the meantime, if you already know you'd like to join, a heads-up helps us plan the best experience for everyone.</p></details>
+    <details><summary>Who should I contact with questions?</summary><p>We're Type A planners, so you're in good hands. Feel free to reach out to Maggie or Jon anytime with questions about the wedding, accommodations, travel, Bali, or anything else. We're always happy to help.</p></details>
   </div>
 </section>
 
@@ -573,11 +786,22 @@
     <h2>RSVP</h2>
     <p class="lead">Please respond by January 15, 2027</p>
   </div>
+  <p class="reveal" style="max-width:600px;margin:0 auto 36px;text-align:center;color:rgba(250,246,239,0.85);font-family:'Cormorant Garamond',serif;font-size:1.3rem;">Our official RSVP deadline is January 15, 2027, but if you already know whether you'll be joining us, we'd really appreciate an early RSVP to help us plan!</p>
   <form id="rsvpForm" class="reveal" onsubmit="return submitRsvp(event)">
-    <div class="field"><label for="r-name">Full name(s)</label><input id="r-name" name="name" required placeholder="Your name and any guests"></div>
-    <div class="field"><label for="r-email">Email</label><input id="r-email" name="email" type="email" required placeholder="you@email.com"></div>
-    <div class="field"><label for="r-attend">Will you join us?</label><select id="r-attend" name="attending"><option>Joyfully accepts</option><option>Regretfully declines</option></select></div>
-    <div class="field"><label for="r-count">Number in your party</label><input id="r-count" name="party_size" type="number" min="1" value="1"></div>
+    <p class="form-note">Fields marked <span class="req">*</span> are required.</p>
+    <div class="field"><label for="r-name">Full name(s) <span class="req">*</span></label><input id="r-name" name="name" required placeholder="Your name and any guests"></div>
+    <div class="field"><label for="r-email">Email <span class="req">*</span></label><input id="r-email" name="email" type="email" required placeholder="you@email.com"></div>
+    <div class="field"><label for="r-attend">Will you join us for the Wedding Ceremony and Reception on July 15, 2027? <span class="req">*</span></label><select id="r-attend" name="attending" required><option value="" disabled selected>Please select</option><option>Joyfully accepts</option><option>Regretfully declines</option></select></div>
+    <div class="field"><label for="r-welcome">Will you join us for the Welcome Party on the evening of July 14, 2027? <span class="req">*</span></label><select id="r-welcome" name="welcome_party" required><option value="" disabled selected>Please select</option><option>Joyfully accepts</option><option>Regretfully declines</option></select></div>
+    <div class="field"><label for="r-count">Number in your party <span class="req">*</span></label><input id="r-count" name="party_size" type="number" min="1" value="1" required></div>
+
+    <div class="soft-rsvp">
+      <p class="soft-intro">We'd also appreciate a soft RSVP so we can plan accommodations and activities for the group. We'll ask for your formal attendance at a later date.</p>
+      <div class="field"><label for="r-trip">Are you interested in joining us for the group trip after the wedding, July 16 to 19? We'll confirm your attendance and number of nights later. (Optional)</label><select id="r-trip" name="group_trip"><option value="" selected>Select one</option><option>Yes, we will be there</option><option>Yes, we're interested but will confirm later</option><option>No, we will not be attending</option></select></div>
+      <div class="field"><label for="r-act">Are you interested in joining us for July 13's group activities (yoga / pilates or pickleball / golf, beach club, and dinner)? (Optional)</label><select id="r-act" name="group_activities"><option value="" selected>Select one</option><option>Yes, we will be there</option><option>Yes, we're interested but will confirm later</option><option>No, we will not be attending</option></select></div>
+      <div class="field"><label for="r-notes">Special requests / notes (Optional)</label><textarea id="r-notes" name="notes" placeholder="Anything you'd like us to know"></textarea></div>
+    </div>
+
     <div class="center"><button class="btn gold" type="submit" id="rsvpBtn">Send RSVP</button></div>
     <div id="rsvpStatus" class="center notice" style="min-height:1.4em;"></div>
   </form>
@@ -648,6 +872,30 @@
   })();
 
   // Nav solidify + hero + parallax
+  // Mobile hamburger menu
+  (function () {
+    var toggle = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+    if (!toggle || !links) return;
+    toggle.addEventListener('click', function () {
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    function close() {
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+    links.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', close);
+    });
+    // Close when tapping anywhere outside the menu or toggle.
+    document.addEventListener('click', function (ev) {
+      if (!links.classList.contains('open')) return;
+      if (links.contains(ev.target) || toggle.contains(ev.target)) return;
+      close();
+    });
+  })();
+
   var nav = document.getElementById('nav');
   var heroBg = document.getElementById('heroBg');
   var bands = document.querySelectorAll('[data-parallax]');
@@ -691,7 +939,7 @@
   // Paste your Google Apps Script Web App URL between the quotes.
   // Setup steps are in rsvp-google-sheets-setup.md
   // ===========================================================
-  var RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxq1zJ5GifDf-LBJHy6-h0YtFSK68w4D4L1ekqUOIwaWB2-mBtEkbcZ2tfmOM8d1YrL1A/exec";
+  var RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbyx9ii78Vk28AGbHMWpdMa-610Rlbq2h2XD5mNFRbZXfVeq5nZpJag1xdDXBehShwmRbQ/exec";
   var RSVP_FALLBACK_EMAIL = "jonathan@getluckyvr.com";
 
   function submitRsvp(e) {
@@ -709,39 +957,29 @@
       return false;
     }
 
-    btn.disabled = true;
-    status.style.color = '';
-    status.textContent = 'Sending your RSVP...';
-
     var nameVal = form.name.value;
     var data = new URLSearchParams();
-    ['name','email','attending','party_size'].forEach(function(k){
+    ['name','email','attending','welcome_party','party_size','group_trip','group_activities','notes'].forEach(function(k){
       data.append(k, form[k] ? form[k].value : '');
     });
 
-    fetch(RSVP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' })
-      .then(function(){
-        form.style.display = 'none';
-        status.innerHTML =
-          '<div style="max-width:540px;margin:0 auto;padding:40px 30px;border:1px solid rgba(216,184,120,0.5);border-radius:12px;background:rgba(255,255,255,0.06);">' +
-          '<div style="font-size:2.4rem;color:var(--gold-lt);line-height:1;">&#10003;</div>' +
-          '<p style="font-family:\'Cormorant Garamond\',serif;font-size:2.2rem;color:var(--cream);margin:10px 0 6px;font-style:normal;">Thank you!</p>' +
-          '<p style="color:rgba(250,246,239,0.85);font-size:1rem;font-style:normal;">Your RSVP is in, ' + (nameVal ? nameVal.split(/[ ,&]/)[0] : 'friend') + '. We can\'t wait to celebrate with you in Bali. Need to change something later? Just reach out to us.</p>' +
-          '</div>';
-        status.style.minHeight = '';
-      })
-      .catch(function(){
-        btn.disabled = false;
-        status.style.color = '#e6b8b8';
-        status.textContent = 'Something went wrong. Please email us at ' + RSVP_FALLBACK_EMAIL + '.';
-      });
+    // Replace the form with a confirmation card (kept on screen), then send in the background.
+    form.innerHTML =
+      '<div style="max-width:560px;margin:0 auto;padding:44px 32px;border:1px solid rgba(216,184,120,0.6);border-radius:14px;background:rgba(255,255,255,0.08);text-align:center;">' +
+      '<div style="width:64px;height:64px;margin:0 auto 14px;border-radius:50%;border:2px solid var(--gold-lt);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--gold-lt);">&#10003;</div>' +
+      '<p style="font-family:\'Cormorant Garamond\',serif;font-size:2.4rem;color:var(--cream);margin:0 0 8px;font-style:normal;">You\'re on the list!</p>' +
+      '<p style="color:rgba(250,246,239,0.9);font-size:1.05rem;font-style:normal;">Thank you, ' + (nameVal ? nameVal.split(/[ ,&]/)[0] : 'friend') + '. Your RSVP has been received. We can\'t wait to celebrate with you in Bali. Need to change something later? Just reach out to us.</p>' +
+      '</div>';
+    if (form.scrollIntoView) form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    fetch(RSVP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' }).catch(function(){});
     return false;
   }
 
   // ===========================================================
   // Room Booking Request -> Google Sheets (same endpoint, "Room Bookings" tab)
   // ===========================================================
-  var BOOKING_FIELDS = ['booking_name','email','phone','checkin','checkout','rooms','bed','adults','children','children_ages','guest_names','requests'];
+  var BOOKING_FIELDS = ['booking_name','email','phone','checkin','checkout','rooms','bed','adults','children','guest_names','requests'];
 
   function submitBooking(e) {
     e.preventDefault();
@@ -757,31 +995,21 @@
       return false;
     }
 
-    btn.disabled = true;
-    status.style.color = '';
-    status.textContent = 'Sending your booking request...';
-
     var bNameVal = form.booking_name.value;
     var data = new URLSearchParams();
     data.append('form', 'booking');
     BOOKING_FIELDS.forEach(function(k){ data.append(k, form[k] ? form[k].value : ''); });
 
-    fetch(RSVP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' })
-      .then(function(){
-        form.style.display = 'none';
-        status.innerHTML =
-          '<div style="max-width:540px;margin:0 auto;padding:36px 28px;border:1px solid var(--gold-lt);border-radius:12px;background:var(--sand);text-align:center;">' +
-          '<div style="font-size:2.4rem;color:var(--gold);line-height:1;">&#10003;</div>' +
-          '<p style="font-family:\'Cormorant Garamond\',serif;font-size:2rem;color:var(--palm-dark);margin:10px 0 6px;font-style:normal;">Booking request received</p>' +
-          '<p style="color:var(--muted);font-size:1rem;font-style:normal;">Thank you, ' + (bNameVal ? bNameVal.split(/[ ,&]/)[0] : 'friend') + '. Your details are in and we\'ll contact you with next steps for the deposit payment to secure your room. This is not a confirmed reservation yet.</p>' +
-          '</div>';
-        status.style.minHeight = '';
-      })
-      .catch(function(){
-        btn.disabled = false;
-        status.style.color = '#c46a6a';
-        status.textContent = 'Something went wrong. Please email us at ' + RSVP_FALLBACK_EMAIL + '.';
-      });
+    // Replace the form with a confirmation card (kept on screen), then send in the background.
+    form.innerHTML =
+      '<div style="max-width:560px;margin:0 auto;padding:40px 30px;border:1.5px solid var(--gold-lt);border-radius:14px;background:var(--sand);text-align:center;">' +
+      '<div style="width:64px;height:64px;margin:0 auto 14px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--gold);">&#10003;</div>' +
+      '<p style="font-family:\'Cormorant Garamond\',serif;font-size:2.2rem;color:var(--palm-dark);margin:0 0 8px;font-style:normal;">Booking request received</p>' +
+      '<p style="color:var(--muted);font-size:1.05rem;font-style:normal;">Thank you, ' + (bNameVal ? bNameVal.split(/[ ,&]/)[0] : 'friend') + '. Your details are in and we\'ll contact you with next steps for the deposit payment to secure your room. This is not a confirmed reservation yet.</p>' +
+      '</div>';
+    if (form.scrollIntoView) form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    fetch(RSVP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' }).catch(function(){});
     return false;
   }
 </script>

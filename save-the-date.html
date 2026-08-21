@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maggie &amp; Jonathan | Save the Date | Bali 2027</title>
+<meta name="description" content="Save the date: Maggie and Jonathan are getting married in Bali, Indonesia on July 15, 2027.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #f7f2ea;
+    --ink: #2e3a36;
+    --palm: #4f6f5c;
+    --gold: #c2a15c;
+    --white: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  h1, h2, .serif { font-family: 'Cormorant Garamond', serif; }
+  section { padding: 72px 24px; max-width: 760px; margin: 0 auto; text-align: center; }
+
+  /* Hero */
+  .hero {
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 48px 24px;
+    background: linear-gradient(180deg, #e9f0ec 0%, var(--sand) 100%);
+  }
+  .hero .eyebrow {
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: var(--palm);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    font-weight: 500;
+    line-height: 1.15;
+  }
+  .hero .amp { color: var(--gold); font-style: italic; }
+  .hero .date {
+    margin-top: 28px;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .hero .place {
+    margin-top: 8px;
+    font-size: 1rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--palm);
+  }
+  .divider {
+    width: 64px; height: 1px; background: var(--gold);
+    margin: 32px auto;
+  }
+
+  /* Countdown */
+  .countdown {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .countdown .unit {
+    background: var(--white);
+    border: 1px solid #e5ddce;
+    border-radius: 8px;
+    padding: 16px 20px;
+    min-width: 86px;
+  }
+  .countdown .num { font-size: 2rem; font-weight: 500; font-family: 'Cormorant Garamond', serif; }
+  .countdown .label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--palm); }
+
+  h2 {
+    font-size: 2.2rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .card {
+    background: var(--white);
+    border: 1px solid #e5ddce;
+    border-radius: 10px;
+    padding: 32px;
+    margin-top: 24px;
+    text-align: left;
+  }
+  .card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    color: var(--palm);
+  }
+  .card p { font-size: 0.95rem; }
+  .card + .card { margin-top: 16px; }
+
+  .btn {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 14px 40px;
+    background: var(--palm);
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border-radius: 999px;
+  }
+  .btn:hover { background: #3e594a; }
+
+  footer {
+    text-align: center;
+    padding: 48px 24px;
+    font-size: 0.85rem;
+    color: var(--palm);
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="eyebrow">Save the Date</p>
+  <h1>Maggie <span class="amp">&amp;</span> Jonathan</h1>
+  <div class="divider"></div>
+  <p class="date">July 15, 2027</p>
+  <p class="place">Bali, Indonesia</p>
+  <div class="countdown" id="countdown">
+    <div class="unit"><div class="num" id="cd-days">-</div><div class="label">Days</div></div>
+    <div class="unit"><div class="num" id="cd-hours">-</div><div class="label">Hours</div></div>
+    <div class="unit"><div class="num" id="cd-mins">-</div><div class="label">Minutes</div></div>
+  </div>
+</div>
+
+<section>
+  <h2>We're getting married in Bali!</h2>
+  <p>We can't wait to celebrate with you on the Island of the Gods. Formal invitations with the venue, full schedule, and RSVP details will follow. For now, mark your calendar and start dreaming about a tropical getaway.</p>
+</section>
+
+<section style="padding-top: 0;">
+  <h2>Start planning your trip</h2>
+  <div class="card">
+    <h3>Getting there</h3>
+    <p>Fly into Ngurah Rai International Airport (DPS) in Denpasar, Bali's only international airport. Most guests will connect through hubs like Singapore, Taipei, Seoul, Doha, or Sydney.</p>
+  </div>
+  <div class="card">
+    <h3>When to arrive</h3>
+    <p>We suggest arriving by July 13 to settle in and joining us through July 16 or beyond. July is dry season in Bali: sunny, low humidity for the tropics, and around 27&deg;C / 81&deg;F. It's also peak season, so book flights early for the best fares.</p>
+  </div>
+  <div class="card">
+    <h3>Passports and visas</h3>
+    <p>Your passport must be valid at least 6 months beyond your arrival date. Most nationalities (including US, Canada, UK, EU, and Australia) can get a visa on arrival or e-visa (e-VOA), valid 30 days. Check current requirements closer to travel.</p>
+  </div>
+  <div class="card">
+    <h3>Details coming soon</h3>
+    <p>Venue, hotel recommendations at a range of price points, transportation, a full event schedule, and a Bali guest guide will all be on this site once finalized. Watch this space.</p>
+  </div>
+</section>
+
+<section style="padding-top: 0;">
+  <h2>Let us know you're interested</h2>
+  <p>No commitment yet, but a quick note helps us plan. Formal RSVPs will open with the invitations.</p>
+  <a class="btn" href="mailto:jonathan@getluckyvr.com?subject=Bali%202027%20-%20Count%20us%20in!">Count us in</a>
+</section>
+
+<footer>
+  <p class="serif" style="font-size: 1.3rem;">Maggie &amp; Jonathan</p>
+  <p>07.15.2027 &middot; Bali, Indonesia</p>
+</footer>
+
+<script>
+  (function () {
+    // Wedding date in Bali time (WITA, UTC+8)
+    var target = new Date('2027-07-15T00:00:00+08:00').getTime();
+    function tick() {
+      var diff = target - Date.now();
+      if (diff <= 0) {
+        document.getElementById('countdown').innerHTML =
+          '<p class="serif" style="font-size:1.5rem;">It\'s wedding day!</p>';
+        return;
+      }
+      var d = Math.floor(diff / 86400000);
+      var h = Math.floor((diff % 86400000) / 3600000);
+      var m = Math.floor((diff % 3600000) / 60000);
+      document.getElementById('cd-days').textContent = d;
+      document.getElementById('cd-hours').textContent = h;
+      document.getElementById('cd-mins').textContent = m;
+      setTimeout(tick, 30000);
+    }
+    tick();
+  })();
+</script>
+
+</body>
+</html>
